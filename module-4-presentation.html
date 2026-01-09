@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 4: Presentation & Pitch | Sales Techniques | OpticalOwners</title>
+    <meta name="description" content="Learn how to present optical products effectively, demonstrate value, and create compelling solutions tailored to customer needs.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-display: 'DM Serif Display', Georgia, serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --bg-primary: #faf9f7;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f5f3ef;
+            --text-primary: #0a1628;
+            --text-secondary: #4b5563;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --teal: #0d9488;
+            --teal-dark: #0a766c;
+            --teal-light: rgba(13, 148, 136, 0.1);
+            --gold: #d4a853;
+            --green: #10b981;
+            --green-light: rgba(16, 185, 129, 0.1);
+            --red: #ef4444;
+            --red-light: rgba(239, 68, 68, 0.1);
+        }
+        [data-theme="dark"] {
+            --bg-primary: #0a1628;
+            --bg-secondary: #142238;
+            --bg-tertiary: #1e3a5f;
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --text-muted: #9ca3af;
+            --border-color: #374151;
+            --teal-light: rgba(13, 148, 136, 0.2);
+            --green-light: rgba(16, 185, 129, 0.2);
+            --red-light: rgba(239, 68, 68, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            line-height: 1.7;
+            transition: background 0.3s, color 0.3s;
+        }
+        header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-icon svg { width: 20px; height: 20px; fill: white; }
+        .logo-text { font-family: var(--font-display); font-size: 1.2rem; }
+        .theme-toggle {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .theme-toggle:hover { border-color: var(--teal); }
+        .theme-toggle svg { width: 20px; height: 20px; fill: var(--text-secondary); }
+        .theme-toggle .sun { display: none; }
+        [data-theme="dark"] .theme-toggle .sun { display: block; }
+        [data-theme="dark"] .theme-toggle .moon { display: none; }
+        .progress-container {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+        }
+        .progress-wrapper { max-width: 900px; margin: 0 auto; }
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        .progress-label { font-size: 0.85rem; font-weight: 600; color: var(--text-primary); }
+        .progress-text { font-size: 0.85rem; color: var(--text-muted); }
+        .progress-bar {
+            height: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--teal), var(--gold));
+            border-radius: 10px;
+            transition: width 0.5s;
+            width: 0%;
+        }
+        main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+        .module-header { margin-bottom: 2rem; }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .breadcrumb a { color: var(--teal); text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .module-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.75rem, 5vw, 2.5rem);
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .module-description { font-size: 1.1rem; color: var(--text-secondary); }
+        .topic-nav {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+            -webkit-overflow-scrolling: touch;
+        }
+        .topic-tab {
+            flex-shrink: 0;
+            padding: 0.6rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .topic-tab:hover { border-color: var(--teal); color: var(--teal); }
+        .topic-tab.active { background: var(--teal); border-color: var(--teal); color: white; }
+        .topic-tab.completed { background: var(--green-light); border-color: var(--green); color: var(--green); }
+        .topic-content { display: none; animation: fadeIn 0.4s; }
+        .topic-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .lesson-card {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+        .lesson-card h2 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+        }
+        .lesson-card h3 { font-size: 1.1rem; color: var(--text-primary); margin: 1.5rem 0 0.75rem; }
+        .lesson-card p { margin-bottom: 1rem; }
+        .lesson-card ul, .lesson-card ol { margin: 1rem 0 1rem 1.5rem; }
+        .lesson-card li { margin-bottom: 0.5rem; }
+        .key-point {
+            background: var(--teal-light);
+            border-left: 4px solid var(--teal);
+            padding: 1rem 1.25rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1.5rem 0;
+        }
+        .key-point strong { color: var(--teal); display: block; margin-bottom: 0.25rem; }
+        .tip-box {
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+            margin: 1.5rem 0;
+            display: flex;
+            gap: 0.75rem;
+        }
+        .tip-box svg { width: 24px; height: 24px; fill: var(--gold); flex-shrink: 0; }
+        .quiz-section {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+        }
+        .quiz-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+        .quiz-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--teal-light);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .quiz-icon svg { width: 24px; height: 24px; fill: var(--teal); }
+        .quiz-title { font-family: var(--font-display); font-size: 1.25rem; color: var(--text-primary); }
+        .quiz-subtitle { font-size: 0.9rem; color: var(--text-muted); }
+        .question { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); }
+        .question:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .question-text { font-weight: 600; color: var(--text-primary); margin-bottom: 1rem; }
+        .question-number { color: var(--teal); margin-right: 0.5rem; }
+        .options { display: flex; flex-direction: column; gap: 0.5rem; }
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option:hover { border-color: var(--teal); }
+        .option.selected { border-color: var(--teal); background: var(--teal-light); }
+        .option.correct { border-color: var(--green); background: var(--green-light); }
+        .option.incorrect { border-color: var(--red); background: var(--red-light); }
+        .option-radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--text-muted);
+            border-radius: 50%;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            position: relative;
+        }
+        .option.selected .option-radio { border-color: var(--teal); background: var(--teal); }
+        .option.correct .option-radio { border-color: var(--green); background: var(--green); }
+        .option.incorrect .option-radio { border-color: var(--red); background: var(--red); }
+        .option.selected .option-radio::after,
+        .option.correct .option-radio::after,
+        .option.incorrect .option-radio::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+        }
+        .option-text { color: var(--text-secondary); }
+        .feedback {
+            display: none;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+        }
+        .feedback.show { display: block; }
+        .feedback.correct { background: var(--green-light); color: var(--green); }
+        .feedback.incorrect { background: var(--red-light); color: var(--red); }
+        .quiz-results { display: none; text-align: center; padding: 2rem 0; }
+        .quiz-results.show { display: block; }
+        .results-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+        .results-icon.pass { background: var(--green-light); }
+        .results-icon.fail { background: var(--red-light); }
+        .results-icon svg { width: 40px; height: 40px; }
+        .results-icon.pass svg { fill: var(--green); }
+        .results-icon.fail svg { fill: var(--red); }
+        .results-title { font-family: var(--font-display); font-size: 1.5rem; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .results-score { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 1.5rem; }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.75rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            text-decoration: none;
+            font-family: var(--font-body);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        .btn-secondary:hover { border-color: var(--teal); color: var(--teal); }
+        .btn svg { width: 20px; height: 20px; fill: currentColor; }
+        .quiz-actions { display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+        .final-quiz-intro { text-align: center; padding: 3rem 1rem; }
+        .final-quiz-intro h2 { font-family: var(--font-display); font-size: 2rem; color: var(--text-primary); margin-bottom: 1rem; }
+        .final-quiz-intro p { color: var(--text-secondary); margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+        .final-quiz-stats { display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem; flex-wrap: wrap; }
+        .stat-item { text-align: center; }
+        .stat-value { font-family: var(--font-display); font-size: 2rem; color: var(--teal); }
+        .stat-label { font-size: 0.85rem; color: var(--text-muted); }
+        .hidden { display: none !important; }
+        @media (max-width: 640px) {
+            header, .progress-container { padding: 0.875rem 1rem; }
+            .logo-text { display: none; }
+            main { padding: 1.5rem 1rem 3rem; }
+            .lesson-card, .quiz-section { padding: 1.5rem; border-radius: 12px; }
+            .topic-tab { padding: 0.5rem 0.75rem; font-size: 0.8rem; }
+            .nav-buttons { flex-direction: column; }
+            .nav-buttons .btn, .quiz-actions .btn { width: 100%; }
+            .quiz-actions { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="/" class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                </div>
+                <span class="logo-text">OpticalOwners</span>
+            </a>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                <svg class="moon" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
+                <svg class="sun" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <div class="progress-container">
+        <div class="progress-wrapper">
+            <div class="progress-header">
+                <span class="progress-label">Module 4: Presentation & Pitch</span>
+                <span class="progress-text" id="progressText">0% Complete</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="module-header">
+            <div class="breadcrumb">
+                <a href="/">Home</a><span>›</span>
+                <a href="/courses/sales-techniques/">Sales Techniques</a><span>›</span>
+                <span>Module 4</span>
+            </div>
+            <h1 class="module-title">Module 4: Presentation & Pitch</h1>
+            <p class="module-description">Learn how to present optical products compellingly, demonstrate real value, and create customized solutions that resonate with each customer's unique needs.</p>
+        </div>
+
+        <div class="topic-nav" id="topicNav">
+            <button class="topic-tab active" data-topic="1">1. Features vs. Benefits</button>
+            <button class="topic-tab" data-topic="2">2. Tailoring Your Presentation</button>
+            <button class="topic-tab" data-topic="3">3. Demonstrating Products</button>
+            <button class="topic-tab" data-topic="4">4. Creating Value</button>
+            <button class="topic-tab" data-topic="5">5. The Recommendation</button>
+            <button class="topic-tab" data-topic="final">Final Quiz</button>
+        </div>
+
+        <!-- Topic 1: Features vs. Benefits -->
+        <div class="topic-content active" id="topic-1">
+            <div class="lesson-card">
+                <h2>Features vs. Benefits</h2>
+                <p>The difference between a mediocre presentation and a compelling one often comes down to one thing: are you selling features or benefits? Understanding this distinction is the foundation of effective product presentation.</p>
+                
+                <h3>What's the Difference?</h3>
+                <p><strong>Features</strong> are factual statements about a product—what it is, what it has, how it's made:</p>
+                <ul>
+                    <li>"These lenses have anti-reflective coating"</li>
+                    <li>"This frame is made of titanium"</li>
+                    <li>"These are progressive lenses"</li>
+                </ul>
+                <p><strong>Benefits</strong> explain what those features do for the customer—how they improve their life:</p>
+                <ul>
+                    <li>"You'll see clearly without glare, especially when driving at night"</li>
+                    <li>"These frames are incredibly light—you'll forget you're wearing them"</li>
+                    <li>"You can see at all distances without switching between multiple pairs"</li>
+                </ul>
+
+                <div class="key-point">
+                    <strong>Key Insight</strong>
+                    Customers don't buy features—they buy outcomes. They don't want anti-reflective coating; they want to see clearly while driving at night. Always connect the "what" to the "so what."
+                </div>
+
+                <h3>The Feature-Benefit Bridge</h3>
+                <p>Use this simple formula to transform features into benefits:</p>
+                <p><strong>"[Feature], which means [Benefit for you]"</strong></p>
+                <ul>
+                    <li>"These lenses have blue light filtering, <em>which means</em> your eyes won't feel as tired after a long day at the computer."</li>
+                    <li>"This frame has spring hinges, <em>which means</em> they'll flex instead of break if your kids grab them."</li>
+                    <li>"These lenses are photochromic, <em>which means</em> you won't need to carry a separate pair of sunglasses."</li>
+                </ul>
+
+                <h3>Common Optical Features → Benefits</h3>
+                <ul>
+                    <li><strong>High-index lenses:</strong> "Thinner, lighter lenses that look better and feel more comfortable"</li>
+                    <li><strong>Scratch-resistant coating:</strong> "Your lenses stay clear longer, saving you money on replacements"</li>
+                    <li><strong>Polarized lenses:</strong> "Crystal clear vision on the water or road with zero glare"</li>
+                    <li><strong>Digital lens design:</strong> "Wider fields of view and easier adaptation than traditional progressives"</li>
+                    <li><strong>Lightweight frames:</strong> "All-day comfort without pressure marks on your nose"</li>
+                </ul>
+
+                <div class="tip-box">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    <div><strong>Pro Tip:</strong> After stating a benefit, pause and check in: "Would that be helpful for you?" This confirms you're on the right track and keeps the customer engaged.</div>
+                </div>
+            </div>
+
+            <div class="quiz-section" data-quiz="1">
+                <div class="quiz-header">
+                    <div class="quiz-icon"><svg viewBox="0 0 24 24"><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg></div>
+                    <div>
+                        <div class="quiz-title">Knowledge Check</div>
+                        <div class="quiz-subtitle">3 questions</div>
+                    </div>
+                </div>
+                <div class="quiz-questions">
+                    <div class="question" data-correct="2">
+                        <div class="question-text"><span class="question-number">1.</span> What's the main difference between a feature and a benefit?</div>
+                        <div class="options">
+                            <div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">Features cost more than benefits</span></div>
+                            <div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">Features describe the product; benefits describe the outcome for the customer</span></div>
+                            <div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">Benefits are technical; features are emotional</span></div>
+                            <div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">There is no difference</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="3">
+                        <div class="question-text"><span class="question-number">2.</span> "These lenses have anti-reflective coating" is an example of:</div>
+                        <div class="options">
+                            <div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">A benefit</span></div>
+                            <div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">A closing technique</span></div>
+                            <div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">A feature</span></div>
+                            <div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">An objection</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="1">
+                        <div class="question-text"><span class="question-number">3.</span> What phrase helps bridge features to benefits?</div>
+                        <div class="options">
+                            <div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">"...which means..."</span></div>
+                            <div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">"...and also..."</span></div>
+                            <div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">"...technically speaking..."</span></div>
+                            <div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">"...in conclusion..."</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                </div>
+                <div class="quiz-results">
+                    <div class="results-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                    <h3 class="results-title">Quiz Complete!</h3>
+                    <p class="results-score"></p>
+                </div>
+                <div class="quiz-actions">
+                    <button class="btn btn-primary submit-quiz">Check Answers</button>
+                    <button class="btn btn-secondary retry-quiz hidden">Try Again</button>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <div></div>
+                <button class="btn btn-primary next-topic" data-next="2">Next: Tailoring Your Presentation <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></button>
+            </div>
+        </div>
+
+        <!-- Topic 2: Tailoring Your Presentation -->
+        <div class="topic-content" id="topic-2">
+            <div class="lesson-card">
+                <h2>Tailoring Your Presentation</h2>
+                <p>A generic presentation gets generic results. The most effective presentations are customized based on what you learned during discovery. When customers feel you truly understand their needs, they trust your recommendations.</p>
+                
+                <h3>Use What You Learned</h3>
+                <p>During discovery, you gathered information about:</p>
+                <ul>
+                    <li>Their lifestyle (work, hobbies, daily activities)</li>
+                    <li>Their pain points (current eyewear frustrations)</li>
+                    <li>Their priorities (style, comfort, durability, price)</li>
+                    <li>Their budget and insurance situation</li>
+                    <li>Their timeline for purchase</li>
+                </ul>
+                <p>Now, use that information to shape which products you present and how you present them.</p>
+
+                <div class="key-point">
+                    <strong>Key Insight</strong>
+                    Reference their own words when presenting: "You mentioned you spend 8 hours a day on the computer—that's exactly why I'm recommending these blue light filtering lenses." This shows you listened and creates instant relevance.
+                </div>
+
+                <h3>Presentation Styles for Different Customers</h3>
+                <p><strong>The Detail-Oriented Customer:</strong></p>
+                <ul>
+                    <li>Wants to understand the "why" behind recommendations</li>
+                    <li>Appreciates technical explanations and comparisons</li>
+                    <li>Give them time to process information</li>
+                    <li>Provide written specs or brochures to review</li>
+                </ul>
+                <p><strong>The Quick Decision-Maker:</strong></p>
+                <ul>
+                    <li>Values efficiency and bottom-line results</li>
+                    <li>Hit the key benefits quickly, skip minor details</li>
+                    <li>Offer clear recommendations with confidence</li>
+                    <li>Don't overwhelm with too many options</li>
+                </ul>
+                <p><strong>The Style-Focused Customer:</strong></p>
+                <ul>
+                    <li>Cares most about how they look</li>
+                    <li>Lead with aesthetics, then functional benefits</li>
+                    <li>Use mirrors frequently, encourage selfies</li>
+                    <li>Mention celebrities or trends when relevant</li>
+                </ul>
+                <p><strong>The Budget-Conscious Customer:</strong></p>
+                <ul>
+                    <li>Needs to understand value for money</li>
+                    <li>Focus on durability, longevity, and included features</li>
+                    <li>Break down cost-per-wear or cost-per-day</li>
+                    <li>Highlight what's covered by insurance</li>
+                </ul>
+
+                <h3>The Rule of Three</h3>
+                <p>Don't overwhelm customers with options. Present three choices:</p>
+                <ul>
+                    <li><strong>Good:</strong> Meets their basic needs at an accessible price</li>
+                    <li><strong>Better:</strong> Adds valuable upgrades for improved experience</li>
+                    <li><strong>Best:</strong> Premium option with all the bells and whistles</li>
+                </ul>
+                <p>This simplifies decision-making while giving them control.</p>
+
+                <div class="tip-box">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    <div><strong>Pro Tip:</strong> Start with the "Better" option. It anchors expectations in the middle, making "Good" feel like a compromise and "Best" feel like an achievable upgrade.</div>
+                </div>
+            </div>
+
+            <div class="quiz-section" data-quiz="2">
+                <div class="quiz-header">
+                    <div class="quiz-icon"><svg viewBox="0 0 24 24"><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg></div>
+                    <div><div class="quiz-title">Knowledge Check</div><div class="quiz-subtitle">3 questions</div></div>
+                </div>
+                <div class="quiz-questions">
+                    <div class="question" data-correct="2">
+                        <div class="question-text"><span class="question-number">1.</span> Why should you reference the customer's own words during your presentation?</div>
+                        <div class="options">
+                            <div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">It saves you time</span></div>
+                            <div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">It shows you listened and creates instant relevance</span></div>
+                            <div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">It's required by company policy</span></div>
+                            <div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">It confuses competitors</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="4">
+                        <div class="question-text"><span class="question-number">2.</span> How should you present to a "Quick Decision-Maker"?</div>
+                        <div class="options">
+                            <div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">Give lots of technical details</span></div>
+                            <div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">Show every option available</span></div>
+                            <div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">Focus primarily on style</span></div>
+                            <div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">Hit key benefits quickly with confident recommendations</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="3">
+                        <div class="question-text"><span class="question-number">3.</span> In the "Rule of Three," which option should you present first?</div>
+                        <div class="options">
+                            <div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">Good (lowest price)</span></div>
+                            <div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">Best (premium option)</span></div>
+                            <div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">Better (middle option)</span></div>
+                            <div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">All at once</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                </div>
+                <div class="quiz-results">
+                    <div class="results-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                    <h3 class="results-title">Quiz Complete!</h3>
+                    <p class="results-score"></p>
+                </div>
+                <div class="quiz-actions">
+                    <button class="btn btn-primary submit-quiz">Check Answers</button>
+                    <button class="btn btn-secondary retry-quiz hidden">Try Again</button>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary prev-topic" data-prev="1"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Previous</button>
+                <button class="btn btn-primary next-topic" data-next="3">Next: Demonstrating Products <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></button>
+            </div>
+        </div>
+
+        <!-- Topic 3: Demonstrating Products -->
+        <div class="topic-content" id="topic-3">
+            <div class="lesson-card">
+                <h2>Demonstrating Products</h2>
+                <p>Telling is good, but showing is better. Product demonstrations create memorable experiences that words alone can't match. In optical retail, hands-on demonstrations help customers understand value and visualize themselves using your products.</p>
+                
+                <h3>Why Demonstrations Work</h3>
+                <ul>
+                    <li><strong>Engagement:</strong> Active participation beats passive listening</li>
+                    <li><strong>Proof:</strong> Customers experience benefits firsthand</li>
+                    <li><strong>Memory:</strong> People remember what they do more than what they hear</li>
+                    <li><strong>Ownership:</strong> Handling products creates psychological ownership</li>
+                </ul>
+
+                <div class="key-point">
+                    <strong>Key Insight</strong>
+                    The longer a customer holds a product, the more likely they are to buy it. Get frames in their hands and on their face as quickly as possible.
+                </div>
+
+                <h3>Effective Demonstration Techniques</h3>
+                <p><strong>Frame demonstrations:</strong></p>
+                <ul>
+                    <li>Place frames in customer's hands—let them feel the weight (or lack of it)</li>
+                    <li>Demonstrate flexibility by gently bending hinges</li>
+                    <li>Show adjustable nose pads and their function</li>
+                    <li>Encourage them to try frames on immediately</li>
+                    <li>Use a hand mirror so they stay engaged with you</li>
+                </ul>
+                <p><strong>Lens demonstrations:</strong></p>
+                <ul>
+                    <li>Use demo lenses to show thickness differences</li>
+                    <li>Show anti-reflective vs. uncoated lenses under lights</li>
+                    <li>Demonstrate photochromic lenses with UV light</li>
+                    <li>Use polarized demo to show glare reduction</li>
+                    <li>Let them look through progressive demo to see zones</li>
+                </ul>
+                <p><strong>Comparison demonstrations:</strong></p>
+                <ul>
+                    <li>Show side-by-side comparisons (thin vs. thick lenses)</li>
+                    <li>Let them feel weight difference between materials</li>
+                    <li>Compare old vs. new lens technology if they bring current glasses</li>
+                </ul>
+
+                <h3>The Mirror Moment</h3>
+                <p>When customers look in the mirror wearing frames, this is a pivotal moment:</p>
+                <ul>
+                    <li>Stay quiet for the first few seconds—let them form their own impression</li>
+                    <li>Watch their expression for genuine reactions</li>
+                    <li>Ask open questions: "What do you think?" or "How does that feel?"</li>
+                    <li>Offer to take a photo so they can see from another angle</li>
+                    <li>Suggest showing family/friends via text for input</li>
+                </ul>
+
+                <div class="tip-box">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    <div><strong>Pro Tip:</strong> Keep demo tools clean, organized, and ready. Fumbling for a dirty demo lens undermines your professionalism and interrupts the flow.</div>
+                </div>
+            </div>
+
+            <div class="quiz-section" data-quiz="3">
+                <div class="quiz-header">
+                    <div class="quiz-icon"><svg viewBox="0 0 24 24"><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg></div>
+                    <div><div class="quiz-title">Knowledge Check</div><div class="quiz-subtitle">3 questions</div></div>
+                </div>
+                <div class="quiz-questions">
+                    <div class="question" data-correct="1">
+                        <div class="question-text"><span class="question-number">1.</span> Why does the length of time a customer holds a product matter?</div>
+                        <div class="options">
+                            <div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">Longer handling creates psychological ownership and increases likelihood to buy</span></div>
+                            <div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">It gives you more time to prepare paperwork</span></div>
+                            <div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">It wears out the product</span></div>
+                            <div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">It doesn't matter at all</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="3">
+                        <div class="question-text"><span class="question-number">2.</span> What should you do during the "mirror moment" when a customer first sees themselves in frames?</div>
+                        <div class="options">
+                            <div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">Immediately tell them how great they look</span></div>
+                            <div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">Start explaining technical features</span></div>
+                            <div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">Stay quiet and let them form their own impression</span></div>
+                            <div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">Show them a different frame</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="2">
+                        <div class="question-text"><span class="question-number">3.</span> What's an effective way to demonstrate anti-reflective coating?</div>
+                        <div class="options">
+                            <div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">Describe it verbally</span></div>
+                            <div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">Show coated vs. uncoated lenses under lights</span></div>
+                            <div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">Give them a brochure</span></div>
+                            <div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">Use a UV light</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                </div>
+                <div class="quiz-results">
+                    <div class="results-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                    <h3 class="results-title">Quiz Complete!</h3>
+                    <p class="results-score"></p>
+                </div>
+                <div class="quiz-actions">
+                    <button class="btn btn-primary submit-quiz">Check Answers</button>
+                    <button class="btn btn-secondary retry-quiz hidden">Try Again</button>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary prev-topic" data-prev="2"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Previous</button>
+                <button class="btn btn-primary next-topic" data-next="4">Next: Creating Value <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></button>
+            </div>
+        </div>
+
+        <!-- Topic 4: Creating Value -->
+        <div class="topic-content" id="topic-4">
+            <div class="lesson-card">
+                <h2>Creating Value</h2>
+                <p>Price is only an objection when value isn't clear. Your job during the presentation is to build so much perceived value that the price feels like a fair exchange—or even a bargain. Value creation is what separates order-takers from sales professionals.</p>
+                
+                <h3>The Value Equation</h3>
+                <p>Customers mentally calculate: <strong>Value = Benefits Received ÷ Price Paid</strong></p>
+                <p>You can increase value by:</p>
+                <ul>
+                    <li>Increasing perceived benefits (better presentation)</li>
+                    <li>Decreasing perceived price (better framing)</li>
+                    <li>Both simultaneously (the sweet spot)</li>
+                </ul>
+
+                <div class="key-point">
+                    <strong>Key Insight</strong>
+                    Never present price before establishing value. If you quote a price before the customer understands the benefits, every price feels high. Build value first, discuss price second.
+                </div>
+
+                <h3>Value-Building Strategies</h3>
+                <p><strong>Stack the benefits:</strong></p>
+                <ul>
+                    <li>Don't stop at one benefit—layer multiple advantages</li>
+                    <li>"These lenses reduce eye strain, block harmful blue light, AND include anti-reflective coating"</li>
+                    <li>Summarize all benefits before discussing price</li>
+                </ul>
+                <p><strong>Quantify when possible:</strong></p>
+                <ul>
+                    <li>"These frames come with a 2-year warranty—that's 730 days of protection"</li>
+                    <li>"At $300 for glasses you'll wear daily for 2 years, that's less than 50 cents a day"</li>
+                    <li>"Patients with this coating report 40% less eye fatigue"</li>
+                </ul>
+                <p><strong>Use social proof:</strong></p>
+                <ul>
+                    <li>"This is our most popular progressive lens—customers love the wide viewing area"</li>
+                    <li>"We've fit hundreds of patients with this brand"</li>
+                    <li>"Online reviews consistently rate this frame 5 stars for comfort"</li>
+                </ul>
+                <p><strong>Create scarcity (when genuine):</strong></p>
+                <ul>
+                    <li>"This color is limited edition—we only received a few"</li>
+                    <li>"Your insurance benefits expire at year-end"</li>
+                    <li>"This promotion ends this week"</li>
+                </ul>
+
+                <h3>Reframing Price</h3>
+                <p>How you present price matters:</p>
+                <ul>
+                    <li><strong>Break it down:</strong> "That's about $1 per day over two years"</li>
+                    <li><strong>Compare to alternatives:</strong> "Less than your daily coffee for perfect vision"</li>
+                    <li><strong>Highlight what's included:</strong> "That includes the exam, frames, lenses, and all coatings"</li>
+                    <li><strong>Focus on investment:</strong> "This is an investment in your vision health"</li>
+                </ul>
+
+                <div class="tip-box">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    <div><strong>Pro Tip:</strong> When stating price, say it confidently without apologizing or flinching. Your confidence in the value reassures the customer.</div>
+                </div>
+            </div>
+
+            <div class="quiz-section" data-quiz="4">
+                <div class="quiz-header">
+                    <div class="quiz-icon"><svg viewBox="0 0 24 24"><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg></div>
+                    <div><div class="quiz-title">Knowledge Check</div><div class="quiz-subtitle">3 questions</div></div>
+                </div>
+                <div class="quiz-questions">
+                    <div class="question" data-correct="2">
+                        <div class="question-text"><span class="question-number">1.</span> When should you present the price to a customer?</div>
+                        <div class="options">
+                            <div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">First thing, to save time</span></div>
+                            <div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">After establishing value and benefits</span></div>
+                            <div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">Only if they ask</span></div>
+                            <div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">Never—let them guess</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="1">
+                        <div class="question-text"><span class="question-number">2.</span> What does "stacking benefits" mean?</div>
+                        <div class="options">
+                            <div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">Layering multiple advantages before discussing price</span></div>
+                            <div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">Physically stacking products on the counter</span></div>
+                            <div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">Adding hidden fees</span></div>
+                            <div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">Organizing inventory</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="3">
+                        <div class="question-text"><span class="question-number">3.</span> How should you state the price?</div>
+                        <div class="options">
+                            <div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">Apologetically, so they don't feel pressured</span></div>
+                            <div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">Quietly, hoping they don't notice</span></div>
+                            <div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">Confidently, without apologizing</span></div>
+                            <div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">Only in writing</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                </div>
+                <div class="quiz-results">
+                    <div class="results-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                    <h3 class="results-title">Quiz Complete!</h3>
+                    <p class="results-score"></p>
+                </div>
+                <div class="quiz-actions">
+                    <button class="btn btn-primary submit-quiz">Check Answers</button>
+                    <button class="btn btn-secondary retry-quiz hidden">Try Again</button>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary prev-topic" data-prev="3"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Previous</button>
+                <button class="btn btn-primary next-topic" data-next="5">Next: The Recommendation <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></button>
+            </div>
+        </div>
+
+        <!-- Topic 5: The Recommendation -->
+        <div class="topic-content" id="topic-5">
+            <div class="lesson-card">
+                <h2>The Recommendation</h2>
+                <p>After presenting options and building value, it's time to make a clear recommendation. Many salespeople fear this moment, but customers actually want guidance. A confident recommendation shows expertise and helps them decide.</p>
+                
+                <h3>Why Recommendations Matter</h3>
+                <p>Customers face choice overload in optical retail—hundreds of frames, dozens of lens options. They look to you as the expert to help navigate these choices. Without a recommendation, they often:</p>
+                <ul>
+                    <li>Feel overwhelmed and delay the decision</li>
+                    <li>Default to the cheapest option (not always best for them)</li>
+                    <li>Leave to "think about it" and never return</li>
+                    <li>Make choices they later regret</li>
+                </ul>
+
+                <div class="key-point">
+                    <strong>Key Insight</strong>
+                    Making a recommendation isn't pushy—it's helpful. You have expertise they don't have. Withholding your professional opinion does them a disservice.
+                </div>
+
+                <h3>How to Make a Strong Recommendation</h3>
+                <p><strong>Be direct and confident:</strong></p>
+                <ul>
+                    <li>"Based on everything you've told me, I recommend..."</li>
+                    <li>"For your lifestyle, the best choice would be..."</li>
+                    <li>"If you were my [mother/brother/friend], I'd suggest..."</li>
+                </ul>
+                <p><strong>Connect to their needs:</strong></p>
+                <ul>
+                    <li>"Since you spend so much time driving, these polarized lenses will make the biggest difference"</li>
+                    <li>"Given your active lifestyle, this titanium frame can handle anything"</li>
+                    <li>"Because you mentioned headaches at work, I really think the blue light protection is worth it"</li>
+                </ul>
+                <p><strong>Summarize why:</strong></p>
+                <ul>
+                    <li>Briefly recap the key benefits for their situation</li>
+                    <li>Reinforce value before asking for commitment</li>
+                    <li>Keep it concise—don't re-present everything</li>
+                </ul>
+
+                <h3>Handling Multiple Options</h3>
+                <p>If the customer is torn between options:</p>
+                <ul>
+                    <li>Ask which features matter most to them</li>
+                    <li>Clarify the key differences in terms of their priorities</li>
+                    <li>Make a recommendation based on their answer</li>
+                    <li>Reassure them: "You can't go wrong with either, but for you specifically..."</li>
+                </ul>
+
+                <h3>After the Recommendation</h3>
+                <p>Once you've made your recommendation:</p>
+                <ul>
+                    <li>Stop talking—give them space to respond</li>
+                    <li>Watch for buying signals or concerns</li>
+                    <li>Be ready to address objections (covered in Module 5)</li>
+                    <li>If they agree, move smoothly to the close (covered in Module 6)</li>
+                </ul>
+
+                <div class="tip-box">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    <div><strong>Pro Tip:</strong> End your recommendation with a simple check-in: "Does that sound like what you're looking for?" This invites dialogue without pressure.</div>
+                </div>
+            </div>
+
+            <div class="quiz-section" data-quiz="5">
+                <div class="quiz-header">
+                    <div class="quiz-icon"><svg viewBox="0 0 24 24"><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg></div>
+                    <div><div class="quiz-title">Knowledge Check</div><div class="quiz-subtitle">3 questions</div></div>
+                </div>
+                <div class="quiz-questions">
+                    <div class="question" data-correct="4">
+                        <div class="question-text"><span class="question-number">1.</span> Why do customers actually want recommendations?</div>
+                        <div class="options">
+                            <div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">They enjoy being told what to do</span></div>
+                            <div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">They don't—recommendations are always pushy</span></div>
+                            <div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">They like to argue</span></div>
+                            <div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">They face choice overload and value expert guidance</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="2">
+                        <div class="question-text"><span class="question-number">2.</span> What should you do immediately after making a recommendation?</div>
+                        <div class="options">
+                            <div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">Keep talking to fill the silence</span></div>
+                            <div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">Stop talking and give them space to respond</span></div>
+                            <div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">Immediately start processing the order</span></div>
+                            <div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">Show them more options</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="1">
+                        <div class="question-text"><span class="question-number">3.</span> How should your recommendation connect to the customer?</div>
+                        <div class="options">
+                            <div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">Reference their specific needs and situation</span></div>
+                            <div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">Focus on what's easiest to sell</span></div>
+                            <div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">Recommend the most expensive option always</span></div>
+                            <div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">Give a generic recommendation for everyone</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                </div>
+                <div class="quiz-results">
+                    <div class="results-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                    <h3 class="results-title">Quiz Complete!</h3>
+                    <p class="results-score"></p>
+                </div>
+                <div class="quiz-actions">
+                    <button class="btn btn-primary submit-quiz">Check Answers</button>
+                    <button class="btn btn-secondary retry-quiz hidden">Try Again</button>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary prev-topic" data-prev="4"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Previous</button>
+                <button class="btn btn-primary next-topic" data-next="final">Take Final Quiz <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></button>
+            </div>
+        </div>
+
+        <!-- Final Quiz -->
+        <div class="topic-content" id="topic-final">
+            <div class="quiz-section">
+                <div class="final-quiz-intro" id="finalQuizIntro">
+                    <h2>Module 4 Final Quiz</h2>
+                    <p>Test your knowledge of presentation and pitch techniques. You need 70% to complete the module.</p>
+                    <div class="final-quiz-stats">
+                        <div class="stat-item"><div class="stat-value">10</div><div class="stat-label">Questions</div></div>
+                        <div class="stat-item"><div class="stat-value">70%</div><div class="stat-label">Passing Score</div></div>
+                    </div>
+                    <button class="btn btn-primary" id="startFinalQuiz">Start Final Quiz</button>
+                </div>
+                <div class="hidden" id="finalQuizContent">
+                    <div class="quiz-header">
+                        <div class="quiz-icon"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div>
+                        <div><div class="quiz-title">Final Quiz</div><div class="quiz-subtitle">10 questions • All topics</div></div>
+                    </div>
+                    <div class="quiz-questions" data-quiz="final">
+                        <div class="question" data-correct="2"><div class="question-text"><span class="question-number">1.</span> Customers buy _____, not features.</div><div class="options"><div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">Specifications</span></div><div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">Benefits/outcomes</span></div><div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">Technical details</span></div><div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">Brand names only</span></div></div><div class="feedback"></div></div>
+                        <div class="question" data-correct="1"><div class="question-text"><span class="question-number">2.</span> The phrase "...which means..." helps you:</div><div class="options"><div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">Bridge features to benefits</span></div><div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">Close the sale</span></div><div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">Handle objections</span></div><div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">Build rapport</span></div></div><div class="feedback"></div></div>
+                        <div class="question" data-correct="3"><div class="question-text"><span class="question-number">3.</span> In the "Rule of Three," start with:</div><div class="options"><div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">Good (cheapest)</span></div><div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">Best (premium)</span></div><div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">Better (middle)</span></div><div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">Random order</span></div></div><div class="feedback"></div></div>
+                        <div class="question" data-correct="1"><div class="question-text"><span class="question-number">4.</span> Longer product handling increases:</div><div class="options"><div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">Psychological ownership and likelihood to buy</span></div><div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">Confusion</span></div><div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">Product damage</span></div><div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">Return rates</span></div></div><div class="feedback"></div></div>
+                        <div class="question" data-correct="3"><div class="question-text"><span class="question-number">5.</span> During the "mirror moment," first:</div><div class="options"><div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">Tell them they look great</span></div><div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">Explain all features</span></div><div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">Stay quiet and let them react</span></div><div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">Suggest a different frame</span></div></div><div class="feedback"></div></div>
+                        <div class="question" data-correct="2"><div class="question-text"><span class="question-number">6.</span> Present price:</div><div class="options"><div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">First, to save time</span></div><div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">After establishing value</span></div><div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">Only if asked</span></div><div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">Never</span></div></div><div class="feedback"></div></div>
+                        <div class="question" data-correct="4"><div class="question-text"><span class="question-number">7.</span> "That's less than 50 cents a day" is an example of:</div><div class="options"><div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">Feature stacking</span></div><div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">Social proof</span></div><div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">Scarcity</span></div><div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">Reframing price</span></div></div><div class="feedback"></div></div>
+                        <div class="question" data-correct="3"><div class="question-text"><span class="question-number">8.</span> State price:</div><div class="options"><div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">Apologetically</span></div><div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">Quietly</span></div><div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">Confidently</span></div><div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">Only in writing</span></div></div><div class="feedback"></div></div>
+                        <div class="question" data-correct="2"><div class="question-text"><span class="question-number">9.</span> After making a recommendation:</div><div class="options"><div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">Keep talking to convince them</span></div><div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">Stop and let them respond</span></div><div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">Show more options</span></div><div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">Start processing the order</span></div></div><div class="feedback"></div></div>
+                        <div class="question" data-correct="1"><div class="question-text"><span class="question-number">10.</span> Making recommendations shows:</div><div class="options"><div class="option" data-option="1"><span class="option-radio"></span><span class="option-text">Expertise and helpfulness</span></div><div class="option" data-option="2"><span class="option-radio"></span><span class="option-text">Pushiness</span></div><div class="option" data-option="3"><span class="option-radio"></span><span class="option-text">Laziness</span></div><div class="option" data-option="4"><span class="option-radio"></span><span class="option-text">Inexperience</span></div></div><div class="feedback"></div></div>
+                    </div>
+                    <div class="quiz-results" id="finalQuizResults">
+                        <div class="results-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                        <h3 class="results-title"></h3>
+                        <p class="results-score"></p>
+                    </div>
+                    <div class="quiz-actions">
+                        <button class="btn btn-primary" id="submitFinalQuiz">Submit Final Quiz</button>
+                        <button class="btn btn-secondary hidden" id="retryFinalQuiz">Try Again</button>
+                        <a href="/module-5-objections.html" class="btn btn-primary hidden" id="nextModule">Next Module: Handling Objections <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></a>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-secondary prev-topic" data-prev="5"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Back to Topics</button>
+                <div></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        themeToggle.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        });
+
+        // Progress & State
+        const state = JSON.parse(localStorage.getItem('module4Progress') || '{"completed":[],"current":1}');
+        const totalTopics = 5;
+
+        function updateProgress() {
+            const pct = Math.round((state.completed.length / (totalTopics + 1)) * 100);
+            document.getElementById('progressFill').style.width = pct + '%';
+            document.getElementById('progressText').textContent = pct + '% Complete';
+            localStorage.setItem('module4Progress', JSON.stringify(state));
+        }
+
+        function markTopicComplete(num) {
+            if (!state.completed.includes(num)) {
+                state.completed.push(num);
+                updateProgress();
+            }
+            const tab = document.querySelector(`.topic-tab[data-topic="${num}"]`);
+            if (tab && num !== 'final') tab.classList.add('completed');
+        }
+
+        // Topic Navigation
+        function showTopic(id) {
+            document.querySelectorAll('.topic-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.topic-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('topic-' + id).classList.add('active');
+            document.querySelector(`.topic-tab[data-topic="${id}"]`).classList.add('active');
+            state.current = id;
+            localStorage.setItem('module4Progress', JSON.stringify(state));
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.querySelectorAll('.topic-tab').forEach(tab => {
+            tab.addEventListener('click', () => showTopic(tab.dataset.topic));
+        });
+
+        document.querySelectorAll('.next-topic').forEach(btn => {
+            btn.addEventListener('click', () => showTopic(btn.dataset.next));
+        });
+
+        document.querySelectorAll('.prev-topic').forEach(btn => {
+            btn.addEventListener('click', () => showTopic(btn.dataset.prev));
+        });
+
+        // Quiz Logic
+        document.querySelectorAll('.quiz-section').forEach(quiz => {
+            const questions = quiz.querySelectorAll('.question');
+            const submitBtn = quiz.querySelector('.submit-quiz');
+            const retryBtn = quiz.querySelector('.retry-quiz');
+            const resultsDiv = quiz.querySelector('.quiz-results');
+
+            if (!submitBtn) return;
+
+            questions.forEach(q => {
+                q.querySelectorAll('.option').forEach(opt => {
+                    opt.addEventListener('click', () => {
+                        if (q.classList.contains('answered')) return;
+                        q.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+                        opt.classList.add('selected');
+                    });
+                });
+            });
+
+            submitBtn.addEventListener('click', () => {
+                let correct = 0;
+                questions.forEach(q => {
+                    q.classList.add('answered');
+                    const correctAns = q.dataset.correct;
+                    const selected = q.querySelector('.option.selected');
+                    const feedback = q.querySelector('.feedback');
+                    
+                    if (selected) {
+                        if (selected.dataset.option === correctAns) {
+                            correct++;
+                            selected.classList.add('correct');
+                            feedback.textContent = '✓ Correct!';
+                            feedback.className = 'feedback show correct';
+                        } else {
+                            selected.classList.add('incorrect');
+                            q.querySelector(`.option[data-option="${correctAns}"]`).classList.add('correct');
+                            feedback.textContent = '✗ Incorrect';
+                            feedback.className = 'feedback show incorrect';
+                        }
+                    } else {
+                        q.querySelector(`.option[data-option="${correctAns}"]`).classList.add('correct');
+                        feedback.textContent = '✗ No answer selected';
+                        feedback.className = 'feedback show incorrect';
+                    }
+                });
+
+                const total = questions.length;
+                const pct = Math.round((correct / total) * 100);
+                const passed = pct >= 70;
+
+                resultsDiv.querySelector('.results-score').textContent = `You scored ${correct}/${total} (${pct}%)`;
+                resultsDiv.querySelector('.results-icon').className = 'results-icon ' + (passed ? 'pass' : 'fail');
+                resultsDiv.querySelector('.results-title').textContent = passed ? 'Great Job!' : 'Keep Practicing';
+                resultsDiv.classList.add('show');
+                submitBtn.classList.add('hidden');
+                retryBtn.classList.remove('hidden');
+
+                if (passed) {
+                    const quizNum = quiz.dataset.quiz;
+                    if (quizNum) markTopicComplete(parseInt(quizNum));
+                }
+            });
+
+            retryBtn.addEventListener('click', () => {
+                questions.forEach(q => {
+                    q.classList.remove('answered');
+                    q.querySelectorAll('.option').forEach(o => o.classList.remove('selected', 'correct', 'incorrect'));
+                    q.querySelector('.feedback').className = 'feedback';
+                });
+                resultsDiv.classList.remove('show');
+                retryBtn.classList.add('hidden');
+                submitBtn.classList.remove('hidden');
+            });
+        });
+
+        // Final Quiz
+        const startFinalBtn = document.getElementById('startFinalQuiz');
+        const finalQuizIntro = document.getElementById('finalQuizIntro');
+        const finalQuizContent = document.getElementById('finalQuizContent');
+        const submitFinalBtn = document.getElementById('submitFinalQuiz');
+        const retryFinalBtn = document.getElementById('retryFinalQuiz');
+        const nextModuleBtn = document.getElementById('nextModule');
+        const finalResults = document.getElementById('finalQuizResults');
+
+        if (startFinalBtn) {
+            startFinalBtn.addEventListener('click', () => {
+                finalQuizIntro.classList.add('hidden');
+                finalQuizContent.classList.remove('hidden');
+            });
+        }
+
+        if (submitFinalBtn) {
+            const finalQuestions = finalQuizContent.querySelectorAll('.question');
+            
+            finalQuestions.forEach(q => {
+                q.querySelectorAll('.option').forEach(opt => {
+                    opt.addEventListener('click', () => {
+                        if (q.classList.contains('answered')) return;
+                        q.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+                        opt.classList.add('selected');
+                    });
+                });
+            });
+
+            submitFinalBtn.addEventListener('click', () => {
+                let correct = 0;
+                finalQuestions.forEach(q => {
+                    q.classList.add('answered');
+                    const correctAns = q.dataset.correct;
+                    const selected = q.querySelector('.option.selected');
+                    const feedback = q.querySelector('.feedback');
+                    
+                    if (selected) {
+                        if (selected.dataset.option === correctAns) {
+                            correct++;
+                            selected.classList.add('correct');
+                            feedback.textContent = '✓ Correct!';
+                            feedback.className = 'feedback show correct';
+                        } else {
+                            selected.classList.add('incorrect');
+                            q.querySelector(`.option[data-option="${correctAns}"]`).classList.add('correct');
+                            feedback.textContent = '✗ Incorrect';
+                            feedback.className = 'feedback show incorrect';
+                        }
+                    } else {
+                        q.querySelector(`.option[data-option="${correctAns}"]`).classList.add('correct');
+                        feedback.textContent = '✗ No answer selected';
+                        feedback.className = 'feedback show incorrect';
+                    }
+                });
+
+                const pct = Math.round((correct / 10) * 100);
+                const passed = pct >= 70;
+
+                finalResults.querySelector('.results-score').textContent = `You scored ${correct}/10 (${pct}%)`;
+                finalResults.querySelector('.results-icon').className = 'results-icon ' + (passed ? 'pass' : 'fail');
+                finalResults.querySelector('.results-title').textContent = passed ? 'Module Complete!' : 'Not Quite';
+                finalResults.classList.add('show');
+                submitFinalBtn.classList.add('hidden');
+
+                if (passed) {
+                    markTopicComplete('final');
+                    nextModuleBtn.classList.remove('hidden');
+                } else {
+                    retryFinalBtn.classList.remove('hidden');
+                }
+            });
+
+            retryFinalBtn.addEventListener('click', () => {
+                finalQuestions.forEach(q => {
+                    q.classList.remove('answered');
+                    q.querySelectorAll('.option').forEach(o => o.classList.remove('selected', 'correct', 'incorrect'));
+                    q.querySelector('.feedback').className = 'feedback';
+                });
+                finalResults.classList.remove('show');
+                retryFinalBtn.classList.add('hidden');
+                submitFinalBtn.classList.remove('hidden');
+            });
+        }
+
+        // Initialize
+        updateProgress();
+        state.completed.forEach(num => {
+            const tab = document.querySelector(`.topic-tab[data-topic="${num}"]`);
+            if (tab && num !== 'final') tab.classList.add('completed');
+        });
+    </script>
+</body>
+</html>
