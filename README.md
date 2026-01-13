@@ -1,64 +1,53 @@
-# OpticalOwners.com
+# Optical Owners Group
 
-Free interactive training courses for optical professionals. ABO certification prep, sales techniques, and customer retention—with quizzes and hands-on exercises.
+**Let's Grow Your Optical Business — Together**
 
-🌐 **Live Site:** [opticalowners.com](https://opticalowners.com)
-
----
-
-## About
-
-OpticalOwners provides free, self-paced training resources for opticians and optical practice owners. Our courses are designed to help new employees get certified and experienced professionals sharpen their skills.
-
-**No login required. No tracking. Just learn.**
+A community-driven resource hub for optical professionals. Free training, expert networking, exclusive resources, and industry support.
 
 ---
 
-## Available Courses
+## 🔗 Quick Links
 
-| Course | Description | Status |
-|--------|-------------|--------|
-| **ABO Certification Prep** | Comprehensive exam preparation covering optics, anatomy, lens materials, and frame fitting | 🚧 Coming Soon |
-| **Sales Techniques** | Learn to recommend products, handle objections, and close sales with confidence | 🚧 Coming Soon |
-| **Customer Retention** | Build lasting patient relationships through excellent service and loyalty strategies | 🚧 Coming Soon |
+- **[Join Our Facebook Group](https://www.facebook.com/groups/585580271530963)** — 4,000+ optical professionals already inside
 
 ---
 
-## Features
+## 📋 About
 
-- ✅ **100% Free** — No hidden fees or premium tiers
-- ✅ **Interactive Quizzes** — Test your knowledge with instant feedback
-- ✅ **Self-Paced** — Learn on your schedule, no deadlines
-- ✅ **No Account Required** — Just click and start learning
+Optical Owners Group is a free community for optical business owners, opticians, and industry professionals to connect, learn, and grow together. Supported by industry leaders including:
 
----
-
-## Project Structure
-
-```
-opticalowners.github.io/
-├── index.html          # Landing page
-├── README.md           # This file
-└── courses/            # Course modules (coming soon)
-    ├── abo-certification/
-    ├── sales-techniques/
-    └── customer-retention/
-```
+- MODO
+- ODs United
+- Lens Outlet USA
+- Paradise Lens Lab
+- Cherry Optical Lab
+- Grow with the Best
+- Ocean State Optical
 
 ---
 
-## Contributing
+## 📁 Repository Contents
 
-Have suggestions or found an issue? Feel free to [open an issue](https://github.com/opticalowners/opticalowners.github.io/issues) or submit a pull request.
-
----
-
-## License
-
-© 2025 OpticalOwners.com. All rights reserved.
+| File | Description |
+|------|-------------|
+| `optical-owners-mailer.html` | Email template for Facebook group recruitment |
 
 ---
 
-## Contact
+## ✨ Features
 
-Questions? Reach out at [opticalowners.com](https://opticalowners.com)
+- ✅ Free Training
+- ✅ Expert Networking
+- ✅ Exclusive Resources
+- ✅ Industry Support
+
+---
+
+## 🤝 Connect With Us
+
+- **Website:** [opticalowners.com](https://opticalowners.com)
+- **Facebook Group:** [Optical Owners](https://www.facebook.com/groups/585580271530963)
+
+---
+
+*Empowering optical professionals to succeed together.*
