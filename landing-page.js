@@ -547,7 +547,7 @@ class OpticalOwnersLanding extends HTMLElement {
                             <h1>Master the Optical Industry with <span>Interactive Courses</span></h1>
                             <p>Free, self-paced training for opticians. From ABO certification prep to sales techniques and customer retention—learn with hands-on quizzes and real-world scenarios.</p>
                             <div class="hero-cta">
-                                <a href="https://www.opticalowners.com/pricing-plans/plans-pricing" class="btn btn-primary">
+                                <a href="https://www.opticalowners.com/training-courses" class="btn btn-primary">
                                     Browse Courses
                                     <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
                                 </a>
@@ -717,7 +717,7 @@ class OpticalOwnersLanding extends HTMLElement {
                     <div class="cta-container">
                         <h2>Ready to Level Up Your Skills?</h2>
                         <p>Whether you're a new optician or a practice owner training your team, our courses give you the knowledge you need—for free.</p>
-                        <a href="https://www.opticalowners.com/pricing-plans/plans-pricing" class="btn btn-primary">
+                        <a href="https://www.opticalowners.com/training-courses" class="btn btn-primary">
                             Start Learning Now
                             <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
                         </a>
