@@ -1,0 +1,3440 @@
+class AboOptometryModule3Ametropia extends HTMLElement {
+    connectedCallback() {
+        this.attachShadow({ mode: 'open' });
+        
+        this.shadowRoot.innerHTML = `
+            <style>
+                @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+        :host {
+            display: block;
+            --font-display: \'DM Serif Display\', Georgia, serif;
+            --font-body: \'Plus Jakarta Sans\', sans-serif;
+            --bg-primary: #0a1628;
+            --bg-secondary: #142238;
+            --bg-tertiary: #1e3a5f;
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --text-muted: #9ca3af;
+            --border-color: #374151;
+            --teal: #0d9488;
+            --teal-dark: #0a766c;
+            --teal-light: rgba(13, 148, 136, 0.2);
+            --gold: #d4a853;
+            --gold-light: rgba(212, 168, 83, 0.2);
+            --green: #10b981;
+            --green-light: rgba(16, 185, 129, 0.2);
+            --red: #ef4444;
+            --red-light: rgba(239, 68, 68, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        .wrapper {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--teal);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover { gap: 0.75rem; }
+
+        .back-link svg { width: 18px; height: 18px; fill: currentColor; }
+
+        .module-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--teal-light);
+            border: 1px solid var(--teal);
+            color: var(--teal);
+            padding: 0.4rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .progress-indicator { display: flex; align-items: center; gap: 0.75rem; }
+
+        .progress-bar {
+            width: 120px;
+            height: 6px;
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--teal), var(--green));
+            border-radius: 3px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .progress-text { font-size: 0.8rem; color: var(--text-muted); }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 2.5rem 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: \'\';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 70%, var(--teal-light) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 30%, var(--gold-light) 0%, transparent 50%);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(1.75rem, 5vw, 2.5rem);
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .exam-weight {
+            display: inline-flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-tertiary);
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+        }
+
+        .weight-item { text-align: center; }
+
+        .weight-value {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            color: var(--teal);
+        }
+
+        .weight-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* Topic Navigation */
+        .topic-nav {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: var(--teal) var(--bg-tertiary);
+        }
+
+        .topic-nav::-webkit-scrollbar { height: 6px; }
+        .topic-nav::-webkit-scrollbar-track { background: var(--bg-tertiary); }
+        .topic-nav::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 3px; }
+
+        .topic-tabs {
+            display: inline-flex;
+            min-width: 100%;
+            justify-content: center;
+            padding: 0 1rem;
+        }
+
+        .topic-tab {
+            flex-shrink: 0;
+            padding: 1rem 1rem;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .topic-tab:hover { color: var(--text-secondary); background: var(--bg-tertiary); }
+        .topic-tab.active { color: var(--teal); border-bottom-color: var(--teal); }
+        .topic-tab.completed { color: var(--green); }
+        .topic-tab.completed::after { content: \' ✓\'; }
+
+        /* Main Content */
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+
+        .topic-content { display: none; }
+        .topic-content.active { display: block; animation: fadeIn 0.3s ease; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Lesson Card */
+        .lesson-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .lesson-card h2 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: 1.25rem;
+        }
+
+        .lesson-card h3 {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin: 1.5rem 0 0.75rem;
+            font-weight: 600;
+        }
+
+        .lesson-card p { color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.8; }
+        .lesson-card ul, .lesson-card ol { margin: 1rem 0 1rem 1.5rem; color: var(--text-secondary); }
+        .lesson-card li { margin-bottom: 0.5rem; line-height: 1.6; }
+        .lesson-card strong { color: var(--text-primary); }
+
+        /* Clinical Pearl Box */
+        .clinical-pearl {
+            background: var(--teal-light);
+            border-left: 4px solid var(--teal);
+            border-radius: 0 12px 12px 0;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .clinical-pearl-title {
+            font-weight: 700;
+            color: var(--teal);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .clinical-pearl-title svg { width: 18px; height: 18px; fill: var(--teal); }
+        .clinical-pearl p { margin: 0; font-size: 0.95rem; }
+
+        /* Red Flag Box */
+        .red-flag {
+            background: var(--red-light);
+            border-left: 4px solid var(--red);
+            border-radius: 0 12px 12px 0;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .red-flag-title {
+            font-weight: 700;
+            color: var(--red);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .red-flag-title svg { width: 18px; height: 18px; fill: var(--red); }
+        .red-flag p { margin: 0; font-size: 0.95rem; }
+
+        /* Exam Tip Box */
+        .exam-tip {
+            background: var(--gold-light);
+            border-left: 4px solid var(--gold);
+            border-radius: 0 12px 12px 0;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .exam-tip-title {
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .exam-tip p { margin: 0; font-size: 0.95rem; }
+
+        /* Tables */
+        .table-wrapper { overflow-x: auto; margin: 1.5rem 0; -webkit-overflow-scrolling: touch; }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 500px;
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 0.875rem;
+            text-align: left;
+            border: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        .comparison-table th {
+            background: var(--bg-tertiary);
+            color: var(--teal);
+            font-weight: 600;
+        }
+
+        .comparison-table td { color: var(--text-secondary); }
+        .comparison-table tr:nth-child(even) { background: rgba(30, 58, 95, 0.3); }
+
+        /* Quiz Section */
+        .quiz-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .quiz-section h3 {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .question {
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .question-text {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .options { display: flex; flex-direction: column; gap: 0.75rem; }
+
+        .option {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover { border-color: var(--teal); background: var(--teal-light); }
+        .option.selected { border-color: var(--teal); background: var(--teal-light); }
+
+        .question.answered .option { cursor: default; }
+        .question.answered .option:hover { background: var(--bg-secondary); border-color: var(--border-color); }
+        .question.answered .option.selected:hover { background: var(--teal-light); border-color: var(--teal); }
+
+        .question.answered .option.correct { border-color: var(--green); background: var(--green-light); }
+        .question.answered .option.incorrect { border-color: var(--red); background: var(--red-light); }
+
+        .option-radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 2px;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .option.selected .option-radio { border-color: var(--teal); }
+        .option.selected .option-radio::after {
+            content: \'\';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background: var(--teal);
+            border-radius: 50%;
+        }
+
+        .question.answered .option.correct .option-radio { border-color: var(--green); background: var(--green); }
+        .question.answered .option.correct .option-radio::after {
+            content: \'✓\';
+            color: white;
+            font-size: 12px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: none;
+            width: auto;
+            height: auto;
+        }
+
+        .question.answered .option.incorrect .option-radio { border-color: var(--red); background: var(--red); }
+        .question.answered .option.incorrect .option-radio::after {
+            content: \'✕\';
+            color: white;
+            font-size: 12px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: none;
+            width: auto;
+            height: auto;
+        }
+
+        .option-text { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; }
+
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            display: none;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .feedback.show { display: block; animation: fadeIn 0.3s ease; }
+        .feedback.correct { background: var(--green-light); border: 1px solid var(--green); color: var(--text-secondary); }
+        .feedback.incorrect { background: var(--red-light); border: 1px solid var(--red); color: var(--text-secondary); }
+        .feedback strong { color: var(--text-primary); }
+
+        /* Quiz Actions */
+        .quiz-actions { display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
+
+        .quiz-results { text-align: center; padding: 2rem; display: none; }
+        .quiz-results.show { display: block; animation: fadeIn 0.3s ease; }
+
+        .results-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--green-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+
+        .results-icon svg { width: 32px; height: 32px; fill: var(--green); }
+
+        .results-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .results-score { color: var(--text-secondary); font-size: 1rem; }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            font-family: var(--font-body);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3); }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover { border-color: var(--teal); color: var(--teal); }
+
+        .btn svg { width: 18px; height: 18px; fill: currentColor; }
+        .hidden { display: none !important; }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Final Quiz Intro */
+        .final-quiz-intro {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .final-quiz-intro h2 {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .final-quiz-intro p { color: var(--text-secondary); margin-bottom: 1.5rem; }
+
+        /* Completion Section */
+        .completion-section { text-align: center; padding: 3rem 2rem; display: none; }
+        .completion-section.show { display: block; animation: fadeIn 0.5s ease; }
+
+        .completion-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--green) 0%, var(--teal) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+
+        .completion-icon svg { width: 40px; height: 40px; fill: white; }
+
+        .completion-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .completion-subtitle { color: var(--gold); font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; }
+        .completion-message { color: var(--text-secondary); max-width: 500px; margin: 0 auto 2rem; }
+        .completion-actions { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+
+        /* ============ ENHANCED MOBILE RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            .header { padding: 0.875rem 1rem; }
+            .header-content { 
+                flex-direction: column; 
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+            .progress-bar { width: 100px; }
+            
+            .hero { padding: 1.5rem 1rem; }
+            .exam-weight { padding: 0.625rem 1rem; gap: 1rem; }
+            
+            main { padding: 1.25rem 1rem 3rem; }
+            .lesson-card { padding: 1.25rem; border-radius: 12px; }
+            .quiz-section { padding: 1.25rem; border-radius: 12px; }
+            
+            .topic-tab { padding: 0.75rem 0.75rem; font-size: 0.75rem; }
+            
+            .nav-buttons { flex-direction: column; gap: 0.75rem; }
+            .nav-buttons .btn { width: 100%; }
+            
+            .quiz-actions { flex-direction: column; }
+            .quiz-actions .btn { width: 100%; }
+            
+            .question { padding: 1rem; margin-bottom: 1rem; }
+            .option { padding: 0.75rem; }
+            
+            .clinical-pearl, .red-flag, .exam-tip { padding: 1rem; margin: 1.25rem 0; }
+            
+            .comparison-table { min-width: 320px; }
+            .comparison-table th, .comparison-table td { 
+                padding: 0.625rem 0.5rem;
+                font-size: 0.8rem;
+            }
+            
+            .completion-actions { flex-direction: column; }
+            .completion-actions .btn { width: 100%; }
+        }
+
+        @media (max-width: 480px) {
+            .header { padding: 0.75rem; }
+            .back-link { font-size: 0.8rem; }
+            .module-badge { font-size: 0.7rem; padding: 0.3rem 0.6rem; }
+            .progress-bar { width: 80px; }
+            .progress-text { font-size: 0.7rem; }
+            
+            .hero { padding: 1.25rem 0.875rem; }
+            .hero h1 { font-size: 1.35rem; }
+            .hero-subtitle { font-size: 0.9rem; }
+            .hero p { font-size: 0.9rem; }
+            
+            .exam-weight { gap: 0.75rem; padding: 0.5rem 0.75rem; }
+            .weight-value { font-size: 1.1rem; }
+            .weight-label { font-size: 0.6rem; }
+            
+            .topic-tabs { padding: 0 0.25rem; }
+            .topic-tab { padding: 0.625rem 0.5rem; font-size: 0.7rem; }
+            
+            main { padding: 1rem 0.875rem 2.5rem; }
+            .lesson-card { padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem; }
+            
+            .lesson-card h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+            .lesson-card h3 { font-size: 1rem; margin: 1.25rem 0 0.5rem; }
+            .lesson-card p { font-size: 0.9rem; }
+            .lesson-card ul, .lesson-card ol { margin-left: 1rem; }
+            .lesson-card li { font-size: 0.9rem; }
+            
+            .table-wrapper { margin: 1rem 0; }
+            .comparison-table { min-width: 280px; }
+            .comparison-table th, .comparison-table td { 
+                padding: 0.5rem 0.375rem; 
+                font-size: 0.7rem; 
+            }
+            
+            .clinical-pearl, .red-flag, .exam-tip { 
+                padding: 0.875rem; 
+                margin: 1rem 0;
+            }
+            .clinical-pearl p, .red-flag p, .exam-tip p { font-size: 0.85rem; }
+            
+            .quiz-section { padding: 1rem; border-radius: 10px; margin-top: 1.5rem; }
+            .quiz-section h3 { font-size: 1.1rem; margin-bottom: 1rem; }
+            
+            .question { padding: 0.875rem; margin-bottom: 0.875rem; border-radius: 10px; }
+            .question-text { font-size: 0.9rem; }
+            .options { gap: 0.5rem; }
+            .option { padding: 0.625rem 0.75rem; gap: 0.625rem; border-radius: 6px; }
+            .option-radio { width: 18px; height: 18px; min-width: 18px; }
+            .option.selected .option-radio::after { width: 8px; height: 8px; }
+            .option-text { font-size: 0.85rem; }
+            
+            .feedback { padding: 0.875rem; font-size: 0.85rem; }
+            
+            .btn { padding: 0.75rem 1.25rem; font-size: 0.875rem; }
+            
+            .nav-buttons { margin-top: 1.5rem; padding-top: 1.5rem; }
+            
+            .final-quiz-intro { padding: 1.5rem 0.5rem; }
+            .final-quiz-intro h2 { font-size: 1.25rem; }
+            .completion-section { padding: 2rem 0.5rem; }
+            .completion-icon { width: 64px; height: 64px; }
+            .completion-icon svg { width: 32px; height: 32px; }
+            .completion-title { font-size: 1.5rem; }
+        }
+
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .option:hover { background: var(--bg-secondary); border-color: var(--border-color); }
+            .option.selected:hover { background: var(--teal-light); border-color: var(--teal); }
+            .btn:hover { transform: none; }
+            .btn-primary:hover { box-shadow: none; }
+            .topic-tab:hover { background: transparent; color: var(--text-muted); }
+            .topic-tab.active:hover { color: var(--teal); }
+        }
+    
+            </style>
+<div class="wrapper">
+<!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="abo-optometry-modules.html" class="back-link">
+                <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                Back to Modules
+            </a>
+            <div class="module-badge">Module 3 of 9</div>
+            <div class="progress-indicator">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="progress-text" id="progressText">0% Complete</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Ametropia & Ophthalmic Optics</h1>
+            <p class="hero-subtitle">Module 3: Spectacle Correction & Myopia Management</p>
+            <p>Master spectacle lens selection, myopia control strategies, prismatic correction, and low vision rehabilitation for comprehensive patient care.</p>
+            <div class="exam-weight">
+                <div class="weight-item">
+                    <div class="weight-value">17</div>
+                    <div class="weight-label">Items</div>
+                </div>
+                <div class="weight-item">
+                    <div class="weight-value">12%</div>
+                    <div class="weight-label">of Exam</div>
+                </div>
+                <div class="weight-item">
+                    <div class="weight-value">12</div>
+                    <div class="weight-label">Topics</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Topic Navigation -->
+    <nav class="topic-nav">
+        <div class="topic-tabs" id="topicTabs">
+            <button class="topic-tab active" data-topic="1">1. Safety Factors</button>
+            <button class="topic-tab" data-topic="2">2. Lens Designs</button>
+            <button class="topic-tab" data-topic="3">3. Prism Rx</button>
+            <button class="topic-tab" data-topic="4">4. Troubleshooting</button>
+            <button class="topic-tab" data-topic="5">5. Myopia Risk</button>
+            <button class="topic-tab" data-topic="6">6. Dual-Focus CL</button>
+            <button class="topic-tab" data-topic="7">7. Ortho-K</button>
+            <button class="topic-tab" data-topic="8">8. Atropine</button>
+            <button class="topic-tab" data-topic="9">9. LV History</button>
+            <button class="topic-tab" data-topic="10">10. LV Assessment</button>
+            <button class="topic-tab" data-topic="11">11. LV Treatment</button>
+            <button class="topic-tab" data-topic="12">12. LV Referrals</button>
+            <button class="topic-tab" data-topic="final">Final Quiz</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- ========== TOPIC 1: SAFETY FACTORS ========== -->
+        <div class="topic-content active" id="topic-1">
+            <div class="lesson-card">
+                <h2>Patient Education on Safety Factors of Eyewear</h2>
+                
+                <p>The FDA mandates that all prescription lenses must meet minimum impact resistance standards. Understanding these requirements is critical for proper patient counseling and lens material selection.</p>
+
+                <h3>FDA Drop Ball Test</h3>
+                <ul>
+                    <li><strong>Standard test:</strong> 5/8" (16mm) steel ball dropped from 50 inches onto lens</li>
+                    <li><strong>Applies to:</strong> All dress eyewear lenses</li>
+                    <li><strong>Minimum thickness:</strong> 2.0mm at thinnest point for standard glass</li>
+                    <li><strong>Lens must not:</strong> Fracture, chip, or have pieces dislodge</li>
+                </ul>
+
+                <h3>ANSI Z87.1 High-Velocity Impact Test</h3>
+                <ul>
+                    <li><strong>Test method:</strong> 1/4" steel ball at 150 ft/sec</li>
+                    <li><strong>Required for:</strong> Industrial safety eyewear, sports protection</li>
+                    <li><strong>Polycarbonate:</strong> Only material that passes without additional thickness</li>
+                    <li><strong>Trivex:</strong> Also meets high-velocity standards</li>
+                </ul>
+
+                <div class="clinical-pearl">
+                    <div class="clinical-pearl-title">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        Clinical Pearl
+                    </div>
+                    <p>Polycarbonate remains the gold standard for pediatric patients, monocular patients, and those in high-risk occupations. Its impact resistance is 10x greater than standard CR-39 plastic.</p>
+                </div>
+
+                <h3>Lens Material Safety Profiles</h3>
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Material</th>
+                            <th>Index</th>
+                            <th>Impact Resistance</th>
+                            <th>Best For</th>
+                        </tr>
+                        <tr>
+                            <td>CR-39 Plastic</td>
+                            <td>1.498</td>
+                            <td>Moderate (passes drop ball)</td>
+                            <td>Standard dress wear, low Rx</td>
+                        </tr>
+                        <tr>
+                            <td>Polycarbonate</td>
+                            <td>1.586</td>
+                            <td>Excellent (10x CR-39)</td>
+                            <td>Children, safety, sports, monocular</td>
+                        </tr>
+                        <tr>
+                            <td>Trivex</td>
+                            <td>1.532</td>
+                            <td>Excellent</td>
+                            <td>Rimless frames, superior optics</td>
+                        </tr>
+                        <tr>
+                            <td>High-Index 1.67</td>
+                            <td>1.67</td>
+                            <td>Good</td>
+                            <td>High myopia, cosmetic concern</td>
+                        </tr>
+                        <tr>
+                            <td>High-Index 1.74</td>
+                            <td>1.74</td>
+                            <td>Moderate</td>
+                            <td>Very high myopia</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="red-flag">
+                    <div class="red-flag-title">
+                        <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                        Red Flag
+                    </div>
+                    <p>Never dispense glass lenses to children under 18 or for any sports/safety application. Glass lenses, even when heat-treated, shatter into sharp fragments upon impact.</p>
+                </div>
+
+                <h3>Special Patient Populations</h3>
+                <p><strong>Monocular Patients:</strong> MUST have polycarbonate or Trivex for the functional eye. Document informed consent if patient declines.</p>
+                <p><strong>Pediatric Patients:</strong> Polycarbonate is standard of care for children under 18. Consider spring hinges for durability and scratch-resistant coating (poly scratches easily).</p>
+                <p><strong>Industrial/Occupational:</strong> OSHA requires ANSI Z87.1 certified safety eyewear. Look for Z87+ marking on frame and lenses.</p>
+
+                <h3>UV Protection</h3>
+                <ul>
+                    <li><strong>Polycarbonate:</strong> Blocks 100% UV inherently</li>
+                    <li><strong>Trivex:</strong> Blocks 100% UV inherently</li>
+                    <li><strong>CR-39:</strong> Requires UV coating to block fully</li>
+                    <li><strong>High-Index:</strong> Most block significant UV, but verify</li>
+                </ul>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-title">📝 Exam Tip</div>
+                    <p>Questions often test when polycarbonate is REQUIRED vs. recommended. Required: children, monocular patients, industrial safety. Recommended: sports, active lifestyles.</p>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Knowledge Check: Safety Factors</h3>
+                <div id="quiz-1">
+                    <div class="question" data-correct="B">
+                        <p class="question-text">1. A 7-year-old child requires glasses for the first time. Which lens material is the STANDARD OF CARE?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. CR-39 plastic with scratch coating</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Polycarbonate with scratch coating</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. High-index 1.67 for thinner appearance</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Trivex for better optics</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="C">
+                        <p class="question-text">2. The FDA drop ball test involves dropping a steel ball of what size from what height?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. 1/4 inch from 50 inches</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. 1/2 inch from 40 inches</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. 5/8 inch from 50 inches</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. 1 inch from 60 inches</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="A">
+                        <p class="question-text">3. A monocular patient refuses polycarbonate lenses despite counseling. What should you do?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Document the refusal and have patient sign informed consent</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Refuse to dispense any lenses</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Dispense CR-39 without documentation</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Automatically upgrade to high-index instead</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                </div>
+                <div class="quiz-actions">
+                    <button class="btn btn-primary submit-quiz" data-quiz="1">Submit Answers</button>
+                    <button class="btn btn-secondary retry-quiz hidden" data-quiz="1">Try Again</button>
+                </div>
+                <div class="quiz-results">
+                    <div class="results-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                    <h4 class="results-title">Quiz Complete!</h4>
+                    <p class="results-score"></p>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <span></span>
+                <button class="btn btn-primary next-topic" data-next="2">Next: Lens Designs <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></button>
+            </div>
+        </div>
+
+        <!-- ========== TOPIC 2: LENS DESIGNS ========== -->
+        <div class="topic-content" id="topic-2">
+            <div class="lesson-card">
+                <h2>Spectacle Lens Designs & Optical Materials</h2>
+                
+                <h3>Single Vision Lens Designs</h3>
+                <ul>
+                    <li><strong>Spherical:</strong> Single power throughout, traditional design</li>
+                    <li><strong>Aspheric:</strong> Flatter, thinner profile; reduces edge thickness in plus powers</li>
+                    <li><strong>Atoric:</strong> Aspheric on both surfaces; optimizes cylinder correction</li>
+                    <li><strong>Digital/Freeform:</strong> Point-by-point optimization for aberration control</li>
+                </ul>
+
+                <div class="clinical-pearl">
+                    <div class="clinical-pearl-title">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        Clinical Pearl
+                    </div>
+                    <p>Aspheric lenses are most beneficial for hyperopes (+3.00D and higher) where they significantly reduce the "bug-eye" magnification effect and improve cosmetics.</p>
+                </div>
+
+                <h3>Progressive Addition Lenses (PALs)</h3>
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Design Type</th>
+                            <th>Corridor Length</th>
+                            <th>Best For</th>
+                            <th>Trade-off</th>
+                        </tr>
+                        <tr>
+                            <td>Standard/Long</td>
+                            <td>14-18mm</td>
+                            <td>Large frames, first-time wearers</td>
+                            <td>Requires larger B measurement</td>
+                        </tr>
+                        <tr>
+                            <td>Short Corridor</td>
+                            <td>11-13mm</td>
+                            <td>Smaller frames, fashion forward</td>
+                            <td>Narrower reading area</td>
+                        </tr>
+                        <tr>
+                            <td>Computer/Office</td>
+                            <td>Variable</td>
+                            <td>Intermediate-near tasks</td>
+                            <td>Limited distance vision</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3>Critical PAL Fitting Measurements</h3>
+                <ul>
+                    <li><strong>Monocular PD:</strong> Essential—binocular PD causes decentration errors</li>
+                    <li><strong>Fitting height:</strong> Pupil center to lowest point of frame</li>
+                    <li><strong>Minimum fitting height:</strong> 14mm for short corridor, 18mm for standard</li>
+                    <li><strong>Vertex distance:</strong> 12-14mm optimal</li>
+                    <li><strong>Pantoscopic tilt:</strong> 8-12° optimal for PAL performance</li>
+                </ul>
+
+                <div class="red-flag">
+                    <div class="red-flag-title">
+                        <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                        Red Flag
+                    </div>
+                    <p>Never fit progressive lenses with a fitting height below the minimum for the design. A short fitting height is the #1 cause of PAL non-adaptation.</p>
+                </div>
+
+                <h3>High-Index Lens Recommendations</h3>
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Prescription Range</th>
+                            <th>Recommended Index</th>
+                            <th>Rationale</th>
+                        </tr>
+                        <tr>
+                            <td>±0.00 to ±2.00</td>
+                            <td>1.50 (CR-39) or Poly</td>
+                            <td>No significant thickness benefit from HI</td>
+                        </tr>
+                        <tr>
+                            <td>±2.25 to ±4.00</td>
+                            <td>1.60 or Trivex</td>
+                            <td>Noticeable improvement in edge thickness</td>
+                        </tr>
+                        <tr>
+                            <td>±4.25 to ±6.00</td>
+                            <td>1.67</td>
+                            <td>Significant cosmetic improvement</td>
+                        </tr>
+                        <tr>
+                            <td>±6.25 and higher</td>
+                            <td>1.74</td>
+                            <td>Maximum thinness available</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-title">📝 Exam Tip</div>
+                    <p>Abbe value measures chromatic aberration. Higher is better. CR-39 = 58 (best), Poly = 30 (worst for plastic), Crown glass = 59. Patients with high prescriptions in low-Abbe materials often report "color fringing."</p>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Knowledge Check: Lens Designs</h3>
+                <div id="quiz-2">
+                    <div class="question" data-correct="B">
+                        <p class="question-text">1. A patient is being fit with their first progressive lenses. Frame B measurement is 32mm and fitting height is 16mm. Which design is MOST appropriate?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Standard corridor (18mm) progressive</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Short corridor (13mm) progressive</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Office/computer progressive</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Bifocal flat-top 28</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="C">
+                        <p class="question-text">2. A patient with -7.50 sphere OU wants the thinnest possible lenses. What do you recommend?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. 1.67 index with scratch coating</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. 1.60 index with UV coating</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. 1.74 index with anti-reflective coating</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Polycarbonate with photochromic</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="D">
+                        <p class="question-text">3. Which lens material has the LOWEST Abbe value, resulting in the most chromatic aberration?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. CR-39 plastic (Abbe 58)</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Crown glass (Abbe 59)</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Trivex (Abbe 45)</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Polycarbonate (Abbe 30)</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                </div>
+                <div class="quiz-actions">
+                    <button class="btn btn-primary submit-quiz" data-quiz="2">Submit Answers</button>
+                    <button class="btn btn-secondary retry-quiz hidden" data-quiz="2">Try Again</button>
+                </div>
+                <div class="quiz-results">
+                    <div class="results-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                    <h4 class="results-title">Quiz Complete!</h4>
+                    <p class="results-score"></p>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary prev-topic" data-prev="1"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Previous</button>
+                <button class="btn btn-primary next-topic" data-next="3">Next: Prism Rx <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></button>
+            </div>
+        </div>
+
+        <!-- Topics 3-12 would continue here with same structure -->
+        <!-- For brevity, I\'ll include placeholder content that can be expanded -->
+
+        <!-- ========== TOPIC 3: PRISM ========== -->
+        <div class="topic-content" id="topic-3">
+            <div class="lesson-card">
+                <h2>Prismatic Correction</h2>
+                
+                <h3>Prism Fundamentals</h3>
+                <p>Prism bends light toward its base while the image appears displaced toward the apex.</p>
+                <ul>
+                    <li><strong>Prism diopter (Δ):</strong> 1Δ displaces light 1cm at 1 meter</li>
+                    <li><strong>Base direction:</strong> Where the thickest part of the prism points</li>
+                    <li><strong>Prentice\'s Rule:</strong> Δ = F × d (where d is decentration in cm)</li>
+                </ul>
+
+                <div class="clinical-pearl">
+                    <div class="clinical-pearl-title">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        Clinical Pearl
+                    </div>
+                    <p>Remember "BILD" - Base In for exo deviations (eso position), Base Out for eso deviations. The prism base moves the eye in the opposite direction.</p>
+                </div>
+
+                <h3>Horizontal Deviations</h3>
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Condition</th>
+                            <th>Prism Direction</th>
+                            <th>Notes</th>
+                        </tr>
+                        <tr>
+                            <td>Esophoria/tropia</td>
+                            <td>Base OUT (BO)</td>
+                            <td>Split between eyes</td>
+                        </tr>
+                        <tr>
+                            <td>Exophoria/tropia</td>
+                            <td>Base IN (BI)</td>
+                            <td>Split between eyes</td>
+                        </tr>
+                        <tr>
+                            <td>Convergence insufficiency</td>
+                            <td>Base IN (BI)</td>
+                            <td>Often relieving prism only</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3>Vertical Deviations</h3>
+                <ul>
+                    <li><strong>Right hypertropia:</strong> BD OD or BU OS</li>
+                    <li><strong>Left hypertropia:</strong> BD OS or BU OD</li>
+                    <li>Rule: Base DOWN in front of the HIGHER eye</li>
+                </ul>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-title">📝 Exam Tip</div>
+                    <p>For vertical prism, always place Base DOWN in front of the HIGHER eye. Think "push the high eye down."</p>
+                </div>
+
+                <h3>Prentice\'s Rule & Induced Prism</h3>
+                <p><strong>Δ = F × d</strong> where F = lens power in diopters, d = decentration in cm</p>
+                <ul>
+                    <li>Plus lenses: prism base toward decentration direction</li>
+                    <li>Minus lenses: prism base opposite decentration direction</li>
+                </ul>
+                <p><strong>Example:</strong> A -5.00D lens decentered 6mm (0.6cm) induces: 5.00 × 0.6 = 3.0Δ</p>
+
+                <h3>Slab-Off</h3>
+                <ul>
+                    <li>Indicated when vertical imbalance exceeds 1.5Δ in reading position</li>
+                    <li>Placed on the MORE MINUS (less plus) lens</li>
+                    <li>Neutralizes Base Up effect of more minus lens in downgaze</li>
+                </ul>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Knowledge Check: Prismatic Correction</h3>
+                <div id="quiz-3">
+                    <div class="question" data-correct="A">
+                        <p class="question-text">1. A patient with esotropia requires prism correction. In which direction should the prism base be oriented?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Base OUT (temporal)</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Base IN (nasal)</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Base UP</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Base DOWN</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="B">
+                        <p class="question-text">2. Using Prentice\'s Rule, how much prism is induced when a +5.00D lens is decentered 4mm nasally?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. 1.25Δ Base OUT</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. 2.0Δ Base IN</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. 2.0Δ Base OUT</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. 20Δ Base IN</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="C">
+                        <p class="question-text">3. A patient has a right hypertropia measuring 4Δ. Which prism prescription is appropriate?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. 4Δ Base UP OD</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. 4Δ Base DOWN OS</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. 2Δ Base DOWN OD and 2Δ Base UP OS</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. 4Δ Base IN OD</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                </div>
+                <div class="quiz-actions">
+                    <button class="btn btn-primary submit-quiz" data-quiz="3">Submit Answers</button>
+                    <button class="btn btn-secondary retry-quiz hidden" data-quiz="3">Try Again</button>
+                </div>
+                <div class="quiz-results">
+                    <div class="results-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                    <h4 class="results-title">Quiz Complete!</h4>
+                    <p class="results-score"></p>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary prev-topic" data-prev="2"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Previous</button>
+                <button class="btn btn-primary next-topic" data-next="4">Next: Troubleshooting <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></button>
+            </div>
+        </div>
+
+        <!-- Placeholder for topics 4-12 - same structure -->
+        <div class="topic-content" id="topic-4">
+            <div class="lesson-card">
+                <h2>Troubleshooting Spectacle Fabrication & Fit Issues</h2>
+                
+                <h3>Common Visual Complaints & Causes</h3>
+                <p>Systematic troubleshooting requires understanding the relationship between symptoms and their potential causes:</p>
+
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Complaint</th>
+                            <th>Likely Causes</th>
+                            <th>Solutions</th>
+                        </tr>
+                        <tr>
+                            <td>Blurry distance vision</td>
+                            <td>Wrong Rx, fitting height too low (PAL), incorrect PD</td>
+                            <td>Verify Rx, check measurements, refit</td>
+                        </tr>
+                        <tr>
+                            <td>Blurry near vision</td>
+                            <td>Insufficient add, seg too low, wrong reading distance</td>
+                            <td>Check add power, raise seg height, verify working distance</td>
+                        </tr>
+                        <tr>
+                            <td>Peripheral distortion/swim</td>
+                            <td>PAL design, high cylinder, excessive face-form</td>
+                            <td>Atoric design, adjust frame wrap, consider different PAL</td>
+                        </tr>
+                        <tr>
+                            <td>Color fringing</td>
+                            <td>Low Abbe value material, high Rx decentered</td>
+                            <td>Higher Abbe material, verify centration</td>
+                        </tr>
+                        <tr>
+                            <td>Eyestrain/headaches</td>
+                            <td>Wrong Rx, incorrect PD, prism error, adaptation</td>
+                            <td>Verify all parameters, check binocular vision</td>
+                        </tr>
+                        <tr>
+                            <td>Objects appear tilted</td>
+                            <td>Cylinder axis error, frame not level</td>
+                            <td>Verify axis, adjust frame</td>
+                        </tr>
+                        <tr>
+                            <td>Double vision</td>
+                            <td>Induced prism, vertical imbalance, incorrect Rx</td>
+                            <td>Check OC heights, verify prism Rx</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="clinical-pearl">
+                    <div class="clinical-pearl-title">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        Clinical Pearl
+                    </div>
+                    <p>For PAL non-adapts, check fitting height FIRST. If the fitting cross is below the pupil center, the patient is looking through the intermediate or near zone for distance—the #1 cause of progressive lens failure.</p>
+                </div>
+
+                <h3>Frame Fitting Problems</h3>
+                <ul>
+                    <li><strong>Nose pads too narrow:</strong> Glasses sit too high, marks on nose, discomfort</li>
+                    <li><strong>Nose pads too wide:</strong> Glasses sit too low, looking over the frame</li>
+                    <li><strong>Temples too long:</strong> Frame slides forward, sits too low</li>
+                    <li><strong>Temples too short:</strong> Pressure behind ears, discomfort</li>
+                    <li><strong>Excessive pantoscopic tilt:</strong> Induced vertical prism, image displacement</li>
+                    <li><strong>Insufficient pantoscopic tilt:</strong> Poor PAL performance, aberrations</li>
+                    <li><strong>Excessive face-form (wrap):</strong> Peripheral distortion, induced prism</li>
+                </ul>
+
+                <h3>Frame Selection by Prescription</h3>
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Prescription Type</th>
+                            <th>Frame Recommendation</th>
+                            <th>Rationale</th>
+                        </tr>
+                        <tr>
+                            <td>High minus (-6.00+)</td>
+                            <td>Small eye size, round shape, thick temples</td>
+                            <td>Minimizes edge thickness, hides lens edges</td>
+                        </tr>
+                        <tr>
+                            <td>High plus (+4.00+)</td>
+                            <td>Larger eye size, avoid small frames</td>
+                            <td>Reduces center thickness appearance</td>
+                        </tr>
+                        <tr>
+                            <td>High cylinder (>2.00D)</td>
+                            <td>Rectangular frames, axis-aligned shape</td>
+                            <td>Minimizes distortion from cylinder</td>
+                        </tr>
+                        <tr>
+                            <td>Progressives</td>
+                            <td>B measurement >30mm, adequate depth</td>
+                            <td>Ensures sufficient fitting height</td>
+                        </tr>
+                        <tr>
+                            <td>Anisometropia (>2.00D diff)</td>
+                            <td>Small, well-centered frames</td>
+                            <td>Minimizes image size difference</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-title">📝 Exam Tip</div>
+                    <p>Remember: High MINUS = small frames ("Minus means minimize"). High PLUS = can use larger frames. This is counterintuitive but relates to where thickness accumulates (edges vs. center).</p>
+                </div>
+
+                <h3>ANSI Z80.1 Tolerances</h3>
+                <p>Know these standards for verifying fabrication accuracy:</p>
+
+                <h4>Sphere Power Tolerance</h4>
+                <ul>
+                    <li>Sphere power ≤±6.50D: ±0.13D tolerance</li>
+                    <li>Sphere power >±6.50D: ±2% tolerance</li>
+                </ul>
+
+                <h4>Cylinder Axis Tolerance (varies by cylinder power)</h4>
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Cylinder Power</th>
+                            <th>Axis Tolerance</th>
+                        </tr>
+                        <tr>
+                            <td>0.25D to 0.50D</td>
+                            <td>±7°</td>
+                        </tr>
+                        <tr>
+                            <td>0.51D to 0.75D</td>
+                            <td>±5°</td>
+                        </tr>
+                        <tr>
+                            <td>0.76D to 1.50D</td>
+                            <td>±3°</td>
+                        </tr>
+                        <tr>
+                            <td>>1.50D</td>
+                            <td>±2°</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h4>Other Tolerances</h4>
+                <ul>
+                    <li><strong>Prism:</strong> ±0.33Δ (or ±0.33Δ per lens for split prism)</li>
+                    <li><strong>Seg height (bifocal/trifocal):</strong> ±1.0mm</li>
+                    <li><strong>PD (distance):</strong> ±2.5mm total (monocular PD: ±1.25mm each)</li>
+                </ul>
+
+                <div class="red-flag">
+                    <div class="red-flag-title">
+                        <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                        Red Flag
+                    </div>
+                    <p>New-onset diplopia after receiving new glasses = induced prism error until proven otherwise. Don\'t tell the patient to "adapt"—verify OC heights, prism, and PD immediately. Vertical prism errors do not adapt well.</p>
+                </div>
+
+                <h3>Systematic Troubleshooting Approach</h3>
+                <ol>
+                    <li><strong>Verify the prescription:</strong> Lensometer check of dispensed glasses vs. written Rx</li>
+                    <li><strong>Check frame fit:</strong> PD, OC heights, pantoscopic tilt, vertex distance</li>
+                    <li><strong>Measure current glasses:</strong> Compare to previous successful Rx</li>
+                    <li><strong>Review the refraction:</strong> Was it consistent? Cycloplegic if needed?</li>
+                    <li><strong>Compare to previous Rx:</strong> Large changes may need gradual transition</li>
+                    <li><strong>Allow appropriate adaptation:</strong> 1-2 weeks for new Rx, 2-4 weeks for first PAL</li>
+                    <li><strong>Re-refract if necessary:</strong> Over-refract over new lenses</li>
+                </ol>
+
+                <h3>Adaptation Expectations</h3>
+                <ul>
+                    <li><strong>New single vision Rx:</strong> 1-2 weeks typical adaptation</li>
+                    <li><strong>First progressive lenses:</strong> 2-4 weeks; may take longer in elderly</li>
+                    <li><strong>Large Rx change (>1.00D):</strong> May need intermediate step</li>
+                    <li><strong>Significant axis change:</strong> Often most difficult to adapt</li>
+                    <li><strong>Prism (new):</strong> Horizontal adapts better than vertical</li>
+                </ul>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Knowledge Check: Troubleshooting</h3>
+                <div id="quiz-4">
+                    <div class="question" data-correct="B">
+                        <p class="question-text">1. A new progressive lens patient reports they cannot see clearly at distance. The Rx has been verified as correct. What is the MOST likely cause?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Add power is too strong</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Fitting height is too low</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Frame is too large</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Corridor is too wide</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="A">
+                        <p class="question-text">2. Which frame characteristics are BEST for a patient with -8.00D OU to minimize edge thickness?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Small eye size, round shape, thick temples</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Large eye size, rectangular shape</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Rimless frame with drill mounts</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Large aviator style</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="C">
+                        <p class="question-text">3. According to ANSI Z80.1, what is the axis tolerance for a -2.00D cylinder?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. ±7°</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. ±5°</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. ±2°</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. ±3°</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                </div>
+                <div class="quiz-actions">
+                    <button class="btn btn-primary submit-quiz" data-quiz="4">Submit Answers</button>
+                    <button class="btn btn-secondary retry-quiz hidden" data-quiz="4">Try Again</button>
+                </div>
+                <div class="quiz-results">
+                    <div class="results-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                    <h4 class="results-title">Quiz Complete!</h4>
+                    <p class="results-score"></p>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary prev-topic" data-prev="3"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Previous</button>
+                <button class="btn btn-primary next-topic" data-next="5">Next: Myopia Risk <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></button>
+            </div>
+        </div>
+
+        <div class="topic-content" id="topic-5">
+            <div class="lesson-card">
+                <h2>Patient Education on Risk Factors & Lifestyle Options</h2>
+                
+                <h3>The Myopia Epidemic</h3>
+                <p>Myopia prevalence has increased dramatically worldwide, representing a significant public health concern. Understanding risk factors enables targeted prevention and early intervention strategies.</p>
+
+                <h4>Global Prevalence Statistics</h4>
+                <ul>
+                    <li><strong>Current global prevalence:</strong> ~30% of world population myopic</li>
+                    <li><strong>Projected 2050:</strong> ~50% of world population (5 billion people)</li>
+                    <li><strong>High myopia (>-6.00D):</strong> Expected to affect 1 billion by 2050</li>
+                    <li><strong>East Asia:</strong> 80-90% prevalence in young urban adults (Taiwan, Singapore, South Korea)</li>
+                    <li><strong>United States:</strong> Prevalence doubled from 25% to 42% between 1971-2004</li>
+                </ul>
+
+                <div class="clinical-pearl">
+                    <div class="clinical-pearl-title">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        Clinical Pearl
+                    </div>
+                    <p>Earlier onset of myopia predicts higher final myopia. A child who becomes myopic at age 6 is far more likely to develop high myopia (-6.00D or worse) than one who becomes myopic at age 12. This makes early intervention critical.</p>
+                </div>
+
+                <h3>Genetic Risk Factors</h3>
+                <p>Family history is one of the strongest predictors of myopia development:</p>
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Parental Myopia</th>
+                            <th>Child\'s Risk</th>
+                            <th>Approximate Chance</th>
+                        </tr>
+                        <tr>
+                            <td>Two myopic parents</td>
+                            <td>6x increased risk</td>
+                            <td>30-40% will become myopic</td>
+                        </tr>
+                        <tr>
+                            <td>One myopic parent</td>
+                            <td>3x increased risk</td>
+                            <td>20-25% will become myopic</td>
+                        </tr>
+                        <tr>
+                            <td>No myopic parents</td>
+                            <td>Baseline risk</td>
+                            <td>~10% will become myopic</td>
+                        </tr>
+                    </table>
+                </div>
+                <p>Myopia is polygenic—over 200 genetic loci have been identified. However, the rapid increase in prevalence over 1-2 generations indicates environmental factors are the primary drivers of the current epidemic.</p>
+
+                <h3>Environmental Risk Factors</h3>
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Factor</th>
+                            <th>Effect on Myopia</th>
+                            <th>Evidence Strength</th>
+                        </tr>
+                        <tr>
+                            <td>Near work (reading, screens)</td>
+                            <td>Increased risk</td>
+                            <td>Moderate</td>
+                        </tr>
+                        <tr>
+                            <td>Outdoor time</td>
+                            <td>Protective</td>
+                            <td>Strong</td>
+                        </tr>
+                        <tr>
+                            <td>Education level/years of schooling</td>
+                            <td>Higher education = more risk</td>
+                            <td>Strong</td>
+                        </tr>
+                        <tr>
+                            <td>Urban vs. rural living</td>
+                            <td>Urban = higher risk</td>
+                            <td>Moderate</td>
+                        </tr>
+                        <tr>
+                            <td>Screen time</td>
+                            <td>Likely increased risk</td>
+                            <td>Emerging</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3>The Outdoor Time Effect</h3>
+                <p>Multiple large studies have demonstrated that time spent outdoors is protective against myopia onset:</p>
+                <ul>
+                    <li><strong>Sydney Myopia Study (Rose et al.):</strong> Children spending >2 hours/day outdoors had 4x lower risk of myopia onset</li>
+                    <li><strong>Guangzhou Study (He et al.):</strong> Adding 40 minutes of outdoor time during school reduced myopia onset by 23%</li>
+                    <li><strong>Taiwan Program:</strong> 80-minute outdoor recess reduced myopia from 48% to 8.4%</li>
+                </ul>
+
+                <h4>Mechanism of Outdoor Protection</h4>
+                <ul>
+                    <li><strong>Light intensity:</strong> Bright light (>1000 lux) appears protective; outdoor light is 10,000-100,000 lux vs. indoor 100-500 lux</li>
+                    <li><strong>Dopamine release:</strong> Bright light stimulates retinal dopamine, which inhibits axial elongation</li>
+                    <li><strong>Distance viewing:</strong> Relaxed accommodation when viewing distant objects</li>
+                    <li><strong>Spectral composition:</strong> Natural light spectrum may play a role</li>
+                </ul>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-title">📝 Exam Tip</div>
+                    <p>Recommend at least 2 hours of outdoor time daily for children. It\'s the LIGHT EXPOSURE that matters most, not the specific outdoor activity. Even being outdoors in shade provides more light than indoors.</p>
+                </div>
+
+                <h3>Patient Counseling Points</h3>
+                <p>When counseling parents about myopia prevention and control:</p>
+                <ul>
+                    <li><strong>Outdoor time:</strong> Minimum 2 hours daily; can be cumulative throughout the day</li>
+                    <li><strong>20-20-20 rule:</strong> Every 20 minutes of near work, look at something 20 feet away for 20 seconds</li>
+                    <li><strong>Reading distance:</strong> Maintain at least Harmon distance (elbow to knuckle) for near tasks</li>
+                    <li><strong>Adequate lighting:</strong> Ensure proper illumination for near work</li>
+                    <li><strong>Limit continuous near work:</strong> Take breaks every 30-45 minutes</li>
+                    <li><strong>Regular eye exams:</strong> Monitor for progression, especially in high-risk children</li>
+                </ul>
+
+                <div class="red-flag">
+                    <div class="red-flag-title">
+                        <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                        Red Flag
+                    </div>
+                    <p>High myopia (>-6.00D) significantly increases lifetime risk of sight-threatening complications: retinal detachment (5-40x risk), myopic maculopathy, glaucoma (2-3x risk), and early cataracts. Aggressive management should begin early in rapidly progressing children.</p>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Knowledge Check: Myopia Risk Factors</h3>
+                <div id="quiz-5">
+                    <div class="question" data-correct="C">
+                        <p class="question-text">1. A child with two myopic parents has approximately what increased risk of developing myopia compared to a child with no myopic parents?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. 2x increased risk</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. 4x increased risk</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. 6x increased risk</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. 10x increased risk</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="B">
+                        <p class="question-text">2. What is the MINIMUM recommended daily outdoor time for myopia prevention in children?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. 30 minutes</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. 2 hours</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. 4 hours</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. 6 hours</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="A">
+                        <p class="question-text">3. Which environmental factor has the STRONGEST evidence for protecting against myopia development?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Outdoor time and bright light exposure</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Reducing screen time</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Improving reading posture</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Vitamin D supplements</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                </div>
+                <div class="quiz-actions">
+                    <button class="btn btn-primary submit-quiz" data-quiz="5">Submit Answers</button>
+                    <button class="btn btn-secondary retry-quiz hidden" data-quiz="5">Try Again</button>
+                </div>
+                <div class="quiz-results">
+                    <div class="results-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                    <h4 class="results-title">Quiz Complete!</h4>
+                    <p class="results-score"></p>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary prev-topic" data-prev="4"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Previous</button>
+                <button class="btn btn-primary next-topic" data-next="6">Next: Dual-Focus CL <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></button>
+            </div>
+        </div>
+
+        <div class="topic-content" id="topic-6">
+            <div class="lesson-card">
+                <h2>Dual-Focus Contact Lens Designs for Myopia Control</h2>
+                
+                <h3>Mechanism of Action</h3>
+                <p>Dual-focus (multifocal) contact lenses for myopia control work by creating simultaneous competing focal points on the retina. The underlying theory involves manipulation of peripheral defocus.</p>
+
+                <h4>Peripheral Defocus Theory</h4>
+                <ul>
+                    <li><strong>Standard single vision correction:</strong> Creates peripheral hyperopic defocus in myopic eyes (image focuses behind peripheral retina)</li>
+                    <li><strong>Peripheral hyperopia signal:</strong> May stimulate continued axial elongation as the eye "grows toward" the focal point</li>
+                    <li><strong>Myopia control lenses:</strong> Create peripheral MYOPIC defocus (image in front of peripheral retina)</li>
+                    <li><strong>Result:</strong> Myopic defocus signals the eye to slow or stop axial growth</li>
+                </ul>
+
+                <div class="clinical-pearl">
+                    <div class="clinical-pearl-title">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        Clinical Pearl
+                    </div>
+                    <p>The center-distance design provides clear central vision for distance while the peripheral treatment zones create myopic defocus to slow eye growth. Think of it as "tricking" the eye into thinking it\'s already fully grown.</p>
+                </div>
+
+                <h3>FDA-Approved Dual-Focus Lenses</h3>
+
+                <h4>MiSight 1 Day (CooperVision)</h4>
+                <ul>
+                    <li><strong>Design:</strong> Center-distance with concentric ActivControl treatment zones</li>
+                    <li><strong>Material:</strong> Omafilcon A (daily disposable hydrogel)</li>
+                    <li><strong>Dk/t:</strong> 28</li>
+                    <li><strong>Water content:</strong> 60%</li>
+                    <li><strong>Age indication:</strong> 8-12 years at initiation (can continue beyond)</li>
+                    <li><strong>Efficacy:</strong> 59% reduction in myopia progression over 3 years</li>
+                    <li><strong>Axial length:</strong> 52% reduction in axial elongation</li>
+                    <li><strong>FDA status:</strong> First FDA-approved myopia control contact lens (November 2019)</li>
+                    <li><strong>Power range:</strong> -0.25 to -10.00D (0.25 steps)</li>
+                </ul>
+
+                <h4>Abiliti 1-Day (Johnson & Johnson Vision)</h4>
+                <ul>
+                    <li><strong>Design:</strong> EDOF (Extended Depth of Focus) with RingBoost technology</li>
+                    <li><strong>Material:</strong> Etafilcon A (daily disposable hydrogel)</li>
+                    <li><strong>Age indication:</strong> 7-12 years at initiation</li>
+                    <li><strong>Efficacy:</strong> Similar reduction rates to MiSight in clinical trials</li>
+                    <li><strong>FDA approval:</strong> 2024</li>
+                </ul>
+
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Feature</th>
+                            <th>MiSight 1 Day</th>
+                            <th>Abiliti 1-Day</th>
+                        </tr>
+                        <tr>
+                            <td>Design</td>
+                            <td>Concentric dual-focus</td>
+                            <td>EDOF + RingBoost</td>
+                        </tr>
+                        <tr>
+                            <td>Modality</td>
+                            <td>Daily disposable</td>
+                            <td>Daily disposable</td>
+                        </tr>
+                        <tr>
+                            <td>Power range</td>
+                            <td>-0.25 to -10.00</td>
+                            <td>-0.50 to -10.00</td>
+                        </tr>
+                        <tr>
+                            <td>Base curve</td>
+                            <td>8.7mm</td>
+                            <td>8.5mm</td>
+                        </tr>
+                        <tr>
+                            <td>Diameter</td>
+                            <td>14.2mm</td>
+                            <td>14.2mm</td>
+                        </tr>
+                        <tr>
+                            <td>Age range (FDA)</td>
+                            <td>8-12 years</td>
+                            <td>7-12 years</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-title">📝 Exam Tip</div>
+                    <p>MiSight was the FIRST FDA-approved contact lens specifically for myopia control (2019). Remember: 59% reduction in progression, ages 8-12 at initiation, daily disposable only.</p>
+                </div>
+
+                <h3>Fitting Considerations</h3>
+                <ul>
+                    <li><strong>Standard CL evaluation:</strong> K readings, HVID, tear film assessment, corneal health</li>
+                    <li><strong>Motivation assessment:</strong> Both child AND parents must be committed</li>
+                    <li><strong>Handling ability:</strong> Verify child can insert/remove independently</li>
+                    <li><strong>Visual expectations:</strong> VA may be slightly reduced vs. single vision (typically 1-2 lines)</li>
+                    <li><strong>Potential complaints:</strong> Mild halos or reduced contrast initially</li>
+                    <li><strong>Follow-up schedule:</strong> 1 week, 1 month, then every 6 months minimum</li>
+                </ul>
+
+                <h3>Patient Selection Criteria</h3>
+                <h4>Ideal Candidates</h4>
+                <ul>
+                    <li>Ages 8-12 at initiation (can continue wearing into teens/adulthood)</li>
+                    <li>Progressive myopia (>0.50D/year progression documented)</li>
+                    <li>Motivated child with involved parents</li>
+                    <li>Good hygiene habits and anticipated compliance</li>
+                    <li>No contraindications to contact lens wear</li>
+                    <li>Myopia in treatment range (-0.25 to -10.00D for MiSight)</li>
+                </ul>
+
+                <h4>Contraindications</h4>
+                <ul>
+                    <li>Active ocular infection or inflammation</li>
+                    <li>Severe dry eye disease</li>
+                    <li>Poor anticipated hygiene or compliance</li>
+                    <li>Known allergy to lens materials or solutions</li>
+                    <li>Conditions that contraindicate CL wear (severe corneal disease, etc.)</li>
+                </ul>
+
+                <div class="red-flag">
+                    <div class="red-flag-title">
+                        <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                        Red Flag
+                    </div>
+                    <p>Daily disposable modality is critical for pediatric myopia control—it maximizes safety and compliance. Do not substitute reusable lenses for FDA-approved daily disposable myopia control designs.</p>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Knowledge Check: Dual-Focus Contact Lenses</h3>
+                <div id="quiz-6">
+                    <div class="question" data-correct="B">
+                        <p class="question-text">1. What is the primary mechanism by which dual-focus contact lenses are thought to slow myopia progression?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Increasing accommodative response</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Creating peripheral myopic defocus</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Flattening the central cornea</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Reducing tear film evaporation</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="C">
+                        <p class="question-text">2. MiSight 1 Day demonstrated what percentage reduction in myopia progression in clinical trials?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. 25%</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. 40%</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. 59%</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. 75%</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="A">
+                        <p class="question-text">3. What is the FDA-approved age range for initiating MiSight 1 Day contact lenses?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. 8-12 years</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. 6-10 years</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. 10-16 years</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. 12-18 years</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                </div>
+                <div class="quiz-actions">
+                    <button class="btn btn-primary submit-quiz" data-quiz="6">Submit Answers</button>
+                    <button class="btn btn-secondary retry-quiz hidden" data-quiz="6">Try Again</button>
+                </div>
+                <div class="quiz-results">
+                    <div class="results-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                    <h4 class="results-title">Quiz Complete!</h4>
+                    <p class="results-score"></p>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary prev-topic" data-prev="5"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Previous</button>
+                <button class="btn btn-primary next-topic" data-next="7">Next: Ortho-K <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></button>
+            </div>
+        </div>
+
+        <div class="topic-content" id="topic-7">
+            <div class="lesson-card">
+                <h2>Orthokeratology & Other Contact Lens Designs</h2>
+                
+                <h3>Orthokeratology (Ortho-K) Overview</h3>
+                <p>Orthokeratology uses specially designed rigid gas permeable (RGP) lenses worn overnight to temporarily reshape the cornea, providing clear daytime vision without correction while simultaneously slowing myopia progression.</p>
+
+                <h4>Mechanism of Action</h4>
+                <ul>
+                    <li><strong>Reverse geometry design:</strong> Lens has a flatter central curve than the cornea, creating hydraulic pressure</li>
+                    <li><strong>Epithelial redistribution:</strong> Central epithelium thins, mid-peripheral epithelium thickens</li>
+                    <li><strong>NOT stromal change:</strong> Effect is in epithelium only—completely reversible</li>
+                    <li><strong>Peripheral myopic defocus:</strong> Mid-peripheral steepening creates myopic defocus similar to soft multifocals</li>
+                    <li><strong>Temporary effect:</strong> Cornea returns to original shape if lens wear discontinued</li>
+                </ul>
+
+                <div class="clinical-pearl">
+                    <div class="clinical-pearl-title">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        Clinical Pearl
+                    </div>
+                    <p>Ortho-K effectiveness for myopia control ranges from 36-56% reduction in axial length progression across multiple studies. It\'s particularly effective for lower to moderate myopia (-1.00 to -4.00D) and works well in children as young as 6-7 years old.</p>
+                </div>
+
+                <h3>Ortho-K Lens Design Zones</h3>
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Zone</th>
+                            <th>Location</th>
+                            <th>Function</th>
+                            <th>Design Feature</th>
+                        </tr>
+                        <tr>
+                            <td>Base Curve (BC)</td>
+                            <td>Central</td>
+                            <td>Flattens central cornea</td>
+                            <td>Flatter than flat K by treatment amount</td>
+                        </tr>
+                        <tr>
+                            <td>Reverse Curve (RC)</td>
+                            <td>Para-central</td>
+                            <td>Creates tear reservoir</td>
+                            <td>Steeper than BC (holds tears)</td>
+                        </tr>
+                        <tr>
+                            <td>Alignment Curve (AC)</td>
+                            <td>Mid-peripheral</td>
+                            <td>Lens centration & stability</td>
+                            <td>Aligned to mid-peripheral cornea</td>
+                        </tr>
+                        <tr>
+                            <td>Peripheral Curve (PC)</td>
+                            <td>Edge</td>
+                            <td>Edge lift for tear exchange</td>
+                            <td>Flatter for adequate lift</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3>Ortho-K Advantages</h3>
+                <ul>
+                    <li><strong>Lens-free daytime vision:</strong> No glasses or contacts during waking hours</li>
+                    <li><strong>Reversible treatment:</strong> Can discontinue if desired</li>
+                    <li><strong>Sports/swimming:</strong> Ideal for active children</li>
+                    <li><strong>Proven myopia control:</strong> Substantial evidence base</li>
+                    <li><strong>Early intervention:</strong> Can start in children as young as 6-7</li>
+                    <li><strong>Parental supervision:</strong> Wear at home under parent oversight</li>
+                </ul>
+
+                <h3>Ortho-K Risks and Limitations</h3>
+                <ul>
+                    <li><strong>Microbial keratitis:</strong> Higher risk than daily soft lenses (overnight wear)</li>
+                    <li><strong>Treatment range:</strong> Typically limited to -6.00D myopia, -1.75D astigmatism</li>
+                    <li><strong>Corneal staining:</strong> Common initially, usually transient</li>
+                    <li><strong>Strict compliance:</strong> Requires meticulous hygiene and lens care</li>
+                    <li><strong>Higher cost:</strong> More expensive than standard contact lenses</li>
+                    <li><strong>Adaptation period:</strong> May take 1-2 weeks for stable vision</li>
+                </ul>
+
+                <div class="red-flag">
+                    <div class="red-flag-title">
+                        <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                        Red Flag
+                    </div>
+                    <p>Ortho-K carries increased risk of microbial keratitis, especially Pseudomonas aeruginosa and Acanthamoeba. Emphasize strict hygiene: NO tap water exposure, replace cases every 1-3 months, never exceed prescribed wearing time, and seek immediate care for red eye or pain.</p>
+                </div>
+
+                <h3>Peripheral Defocus Spectacle Lenses</h3>
+                <p>For children/parents who prefer spectacles, several lens designs provide peripheral myopic defocus without contact lens risks:</p>
+
+                <h4>Available Designs</h4>
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Product</th>
+                            <th>Manufacturer</th>
+                            <th>Design</th>
+                            <th>Efficacy</th>
+                        </tr>
+                        <tr>
+                            <td>MiYOSMART (DIMS)</td>
+                            <td>Hoya</td>
+                            <td>Honeycomb pattern of +3.50D lenslets</td>
+                            <td>~50-60% reduction</td>
+                        </tr>
+                        <tr>
+                            <td>Stellest (HAL)</td>
+                            <td>Essilor</td>
+                            <td>1021 aspherical lenslets</td>
+                            <td>~67% reduction</td>
+                        </tr>
+                        <tr>
+                            <td>MyoCare</td>
+                            <td>Zeiss</td>
+                            <td>C.A.R.E. technology</td>
+                            <td>~30% reduction</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h4>Spectacle Lens Advantages</h4>
+                <ul>
+                    <li>No contact lens handling or infection risk</li>
+                    <li>Easier compliance for younger children</li>
+                    <li>Can be combined with atropine therapy</li>
+                    <li>No overnight wear concerns</li>
+                </ul>
+
+                <h4>Spectacle Lens Limitations</h4>
+                <ul>
+                    <li>Efficacy depends on consistent full-time wear</li>
+                    <li>May be less effective than contact lens options in some studies</li>
+                    <li>Higher cost than standard spectacles</li>
+                    <li>Visual disturbance possible (halos from lenslets)</li>
+                </ul>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-title">📝 Exam Tip</div>
+                    <p>Know the key differences: Ortho-K physically reshapes the cornea through overnight RGP wear (epithelial redistribution). DIMS/Stellest spectacles create peripheral defocus optically without any corneal change—they work only when worn.</p>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Knowledge Check: Ortho-K & Other Designs</h3>
+                <div id="quiz-7">
+                    <div class="question" data-correct="B">
+                        <p class="question-text">1. How does orthokeratology achieve its refractive effect?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Permanent stromal reshaping through collagen remodeling</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Epithelial redistribution causing central flattening</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Steepening of the central cornea</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Increasing overall corneal thickness</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="C">
+                        <p class="question-text">2. What is the primary purpose of the reverse curve in an orthokeratology lens?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. To flatten the central cornea</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. To provide lens centration</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. To create a tear reservoir</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. To provide edge lift for tear exchange</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="D">
+                        <p class="question-text">3. Which infectious agents are of PARTICULAR concern with orthokeratology?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Staphylococcus aureus and Streptococcus</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Herpes simplex virus</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Candida albicans</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Acanthamoeba and Pseudomonas aeruginosa</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                </div>
+                <div class="quiz-actions">
+                    <button class="btn btn-primary submit-quiz" data-quiz="7">Submit Answers</button>
+                    <button class="btn btn-secondary retry-quiz hidden" data-quiz="7">Try Again</button>
+                </div>
+                <div class="quiz-results">
+                    <div class="results-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                    <h4 class="results-title">Quiz Complete!</h4>
+                    <p class="results-score"></p>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary prev-topic" data-prev="6"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Previous</button>
+                <button class="btn btn-primary next-topic" data-next="8">Next: Atropine <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></button>
+            </div>
+        </div>
+
+        <div class="topic-content" id="topic-8">
+            <div class="lesson-card">
+                <h2>Pharmaceutical Management of Myopia</h2>
+                
+                <h3>Atropine for Myopia Control</h3>
+                <p>Low-dose atropine has emerged as one of the most effective pharmaceutical interventions for slowing myopia progression, particularly in children. It is now widely used globally, often in combination with optical treatments.</p>
+
+                <h4>Mechanism of Action</h4>
+                <p>The exact mechanism is not fully understood, but current evidence suggests:</p>
+                <ul>
+                    <li><strong>Not cycloplegia:</strong> Effect appears independent of accommodation at low doses</li>
+                    <li><strong>Muscarinic receptors:</strong> May act on retinal and/or scleral M1-M4 receptors</li>
+                    <li><strong>Scleral remodeling:</strong> May inhibit scleral growth and extracellular matrix changes</li>
+                    <li><strong>Dopamine pathway:</strong> Possible role in modulating retinal dopamine release</li>
+                    <li><strong>Nitric oxide:</strong> May influence nitric oxide signaling in myopia development</li>
+                </ul>
+
+                <div class="clinical-pearl">
+                    <div class="clinical-pearl-title">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        Clinical Pearl
+                    </div>
+                    <p>Low-dose atropine (0.01-0.05%) provides good efficacy with minimal side effects and rebound. The optimal concentration based on LAMP and other studies is approximately 0.05%, balancing efficacy against tolerability.</p>
+                </div>
+
+                <h3>ATOM Studies Summary</h3>
+                <p>The Atropine for Treatment of Myopia (ATOM) studies established the dose-response relationship:</p>
+
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Concentration</th>
+                            <th>Efficacy</th>
+                            <th>Side Effects</th>
+                            <th>Rebound Effect</th>
+                        </tr>
+                        <tr>
+                            <td>1.0%</td>
+                            <td>~77% reduction</td>
+                            <td>Significant (mydriasis, photophobia, blur)</td>
+                            <td>Significant rebound on cessation</td>
+                        </tr>
+                        <tr>
+                            <td>0.5%</td>
+                            <td>~75% reduction</td>
+                            <td>Moderate</td>
+                            <td>Moderate rebound</td>
+                        </tr>
+                        <tr>
+                            <td>0.1%</td>
+                            <td>~68% reduction</td>
+                            <td>Minimal</td>
+                            <td>Mild rebound</td>
+                        </tr>
+                        <tr>
+                            <td>0.05%</td>
+                            <td>~67% reduction (LAMP)</td>
+                            <td>Minimal</td>
+                            <td>Minimal rebound</td>
+                        </tr>
+                        <tr>
+                            <td>0.01%</td>
+                            <td>~50% reduction</td>
+                            <td>Minimal</td>
+                            <td>Minimal rebound</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3>Practical Prescribing</h3>
+
+                <h4>Formulation</h4>
+                <ul>
+                    <li><strong>Commercial availability:</strong> Limited; often requires compounding pharmacy</li>
+                    <li><strong>Typical concentrations:</strong> 0.01%, 0.025%, 0.05%</li>
+                    <li><strong>Preservative-free:</strong> Preferred for long-term use</li>
+                    <li><strong>Storage:</strong> Refrigerate compounded preparations; check expiration</li>
+                </ul>
+
+                <h4>Dosing Regimen</h4>
+                <ul>
+                    <li><strong>Frequency:</strong> 1 drop at bedtime, nightly (both eyes)</li>
+                    <li><strong>Duration:</strong> Continue through active myopia progression period (typically until late teens)</li>
+                    <li><strong>Starting dose:</strong> Often start with 0.01% and increase if needed</li>
+                    <li><strong>Monitoring:</strong> Check axial length and refraction every 6 months</li>
+                </ul>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-title">📝 Exam Tip</div>
+                    <p>Higher concentration atropine = more effective BUT more side effects AND more rebound when stopped. The "sweet spot" is 0.01-0.05% for balancing efficacy with tolerability and minimal rebound.</p>
+                </div>
+
+                <h3>Side Effects to Monitor</h3>
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Side Effect</th>
+                            <th>High Dose (≥0.1%)</th>
+                            <th>Low Dose (≤0.05%)</th>
+                            <th>Management</th>
+                        </tr>
+                        <tr>
+                            <td>Mydriasis</td>
+                            <td>Significant (6-8mm)</td>
+                            <td>Minimal (~1mm increase)</td>
+                            <td>Photochromic lenses, hat outdoors</td>
+                        </tr>
+                        <tr>
+                            <td>Photophobia</td>
+                            <td>Common, bothersome</td>
+                            <td>Rare</td>
+                            <td>Sunglasses, photochromic lenses</td>
+                        </tr>
+                        <tr>
+                            <td>Near blur</td>
+                            <td>Significant (need reading add)</td>
+                            <td>Minimal</td>
+                            <td>May need low add or PALs</td>
+                        </tr>
+                        <tr>
+                            <td>Rebound</td>
+                            <td>Significant acceleration</td>
+                            <td>Minimal</td>
+                            <td>Taper slowly, consider maintenance</td>
+                        </tr>
+                        <tr>
+                            <td>Systemic (rare)</td>
+                            <td>Dry mouth, flushing</td>
+                            <td>Very rare</td>
+                            <td>Punctal occlusion after instillation</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="red-flag">
+                    <div class="red-flag-title">
+                        <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                        Red Flag
+                    </div>
+                    <p>Avoid atropine in patients with angle-closure risk or narrow angles. Use caution in patients with Down syndrome (increased atropine sensitivity) or light-colored irides (more mydriasis). Always check for drug allergies.</p>
+                </div>
+
+                <h3>Combination Therapy</h3>
+                <p>Evidence increasingly supports combining treatments for enhanced efficacy in aggressive progressors:</p>
+                <ul>
+                    <li><strong>Atropine + Ortho-K:</strong> Additive effect demonstrated; reduces progression more than either alone</li>
+                    <li><strong>Atropine + Soft multifocal CL:</strong> Emerging evidence supportive</li>
+                    <li><strong>Atropine + DIMS/Stellest spectacles:</strong> Being studied; logical combination</li>
+                </ul>
+
+                <h4>Treatment Algorithm Considerations</h4>
+                <ol>
+                    <li><strong>Step 1:</strong> Lifestyle modification—increase outdoor time to ≥2 hours/day</li>
+                    <li><strong>Step 2:</strong> Add optical intervention (ortho-K, dual-focus CL, or DIMS/Stellest spectacles)</li>
+                    <li><strong>Step 3:</strong> Consider adding low-dose atropine if progression continues ≥0.50D/year</li>
+                    <li><strong>Step 4:</strong> Combination therapy (optical + pharmaceutical) for aggressive progressors</li>
+                </ol>
+
+                <h3>Other Pharmaceutical Agents</h3>
+                <p>Several other agents are being investigated but are not yet standard of care:</p>
+                <ul>
+                    <li><strong>Pirenzepine:</strong> M1-selective antimuscarinic; showed efficacy but development discontinued</li>
+                    <li><strong>7-methylxanthine:</strong> Adenosine antagonist; limited human data</li>
+                    <li><strong>Topical dopamine agonists:</strong> Preclinical research stage</li>
+                </ul>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Knowledge Check: Pharmaceutical Management</h3>
+                <div id="quiz-8">
+                    <div class="question" data-correct="B">
+                        <p class="question-text">1. According to the ATOM and LAMP studies, which atropine concentration shows the best balance of efficacy with minimal rebound?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. 1.0%</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. 0.01% to 0.05%</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. 0.5%</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. 0.25%</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="C">
+                        <p class="question-text">2. Which side effect is MOST concerning with higher concentration atropine that is minimized with lower concentrations?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Corneal toxicity</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Elevated intraocular pressure</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Rebound myopia progression upon cessation</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Retinal toxicity</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="A">
+                        <p class="question-text">3. What is the typical dosing schedule for low-dose atropine in myopia control?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. 1 drop at bedtime, nightly</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. 1 drop twice daily</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. 1 drop every other day</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. 1 drop weekly</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                </div>
+                <div class="quiz-actions">
+                    <button class="btn btn-primary submit-quiz" data-quiz="8">Submit Answers</button>
+                    <button class="btn btn-secondary retry-quiz hidden" data-quiz="8">Try Again</button>
+                </div>
+                <div class="quiz-results">
+                    <div class="results-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                    <h4 class="results-title">Quiz Complete!</h4>
+                    <p class="results-score"></p>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary prev-topic" data-prev="7"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Previous</button>
+                <button class="btn btn-primary next-topic" data-next="9">Next: LV History <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></button>
+            </div>
+        </div>
+
+        <div class="topic-content" id="topic-9">
+            <div class="lesson-card">
+                <h2>Collection of Specific Patient History & Demographic Data</h2>
+                
+                <h3>Low Vision Definition</h3>
+                <p>Low vision is defined as visual impairment that cannot be fully corrected with standard glasses, contact lenses, medication, or surgery, yet still allows some usable vision. It represents a spectrum between normal vision and total blindness.</p>
+
+                <h3>WHO Visual Impairment Classifications</h3>
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Category</th>
+                            <th>Visual Acuity (Better Eye, BCVA)</th>
+                            <th>Functional Impact</th>
+                        </tr>
+                        <tr>
+                            <td>Mild VI</td>
+                            <td>20/30 - 20/60</td>
+                            <td>Difficulty with fine tasks</td>
+                        </tr>
+                        <tr>
+                            <td>Moderate VI</td>
+                            <td>20/70 - 20/160</td>
+                            <td>Difficulty reading standard print</td>
+                        </tr>
+                        <tr>
+                            <td>Severe VI</td>
+                            <td>20/200 - 20/400</td>
+                            <td>Cannot read newspaper headlines</td>
+                        </tr>
+                        <tr>
+                            <td>Profound VI</td>
+                            <td>20/500 - 20/1000</td>
+                            <td>Relies on non-visual cues</td>
+                        </tr>
+                        <tr>
+                            <td>Near-total blindness</td>
+                            <td>Worse than 20/1000 or VF <10°</td>
+                            <td>Light perception tasks only</td>
+                        </tr>
+                        <tr>
+                            <td>Total blindness</td>
+                            <td>NLP (no light perception)</td>
+                            <td>No visual function</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="clinical-pearl">
+                    <div class="clinical-pearl-title">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        Clinical Pearl
+                    </div>
+                    <p>Legal blindness in the US is defined as BCVA ≤20/200 in the better eye OR visual field ≤20° in the widest diameter. This definition is important for disability determinations, tax benefits, and access to services—but it does NOT mean the patient has no usable vision.</p>
+                </div>
+
+                <h3>Essential History Components</h3>
+
+                <h4>Ocular History</h4>
+                <ul>
+                    <li><strong>Primary diagnosis:</strong> What condition is causing the vision loss?</li>
+                    <li><strong>Onset and progression:</strong> Sudden vs. gradual; stable vs. progressive</li>
+                    <li><strong>Previous treatments:</strong> Surgeries, injections, laser treatments</li>
+                    <li><strong>Current eye medications:</strong> Compliance, side effects</li>
+                    <li><strong>Family history:</strong> Hereditary conditions (RP, macular dystrophy)</li>
+                    <li><strong>Prognosis:</strong> Expected course of the condition</li>
+                </ul>
+
+                <h4>Functional Vision Assessment</h4>
+                <p>Ask about specific tasks rather than general "how is your vision?"</p>
+                <ul>
+                    <li><strong>Reading tasks:</strong> Newspaper, books, mail, medication labels, menus, phone</li>
+                    <li><strong>Distance tasks:</strong> TV, recognizing faces, street signs, bus numbers</li>
+                    <li><strong>Mobility:</strong> Navigation indoors/outdoors, stairs, curbs, obstacles</li>
+                    <li><strong>ADLs:</strong> Cooking, grooming, medication management, writing checks</li>
+                    <li><strong>Lighting needs:</strong> Photophobia vs. need for extra illumination</li>
+                    <li><strong>Contrast issues:</strong> Problems in dim light or with low contrast</li>
+                    <li><strong>Glare sensitivity:</strong> Difficulty with bright lights or sunlight</li>
+                </ul>
+
+                <h4>Psychosocial Assessment</h4>
+                <ul>
+                    <li><strong>Living situation:</strong> Alone vs. with family/caregiver; accessibility of home</li>
+                    <li><strong>Employment status:</strong> Working, retired, or seeking employment</li>
+                    <li><strong>Vocational needs:</strong> Job tasks that require vision</li>
+                    <li><strong>Educational goals:</strong> School-age patients, continuing education</li>
+                    <li><strong>Depression screening:</strong> Very common with vision loss (up to 30%)</li>
+                    <li><strong>Support system:</strong> Family involvement, transportation access</li>
+                    <li><strong>Patient goals:</strong> What do they WANT to be able to do?</li>
+                </ul>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-title">📝 Exam Tip</div>
+                    <p>In low vision, focus on FUNCTION not just acuity numbers. The most important question: "What do you want to be able to do that you can\'t do now?" This guides device selection and rehabilitation goals.</p>
+                </div>
+
+                <h3>Common Causes of Low Vision</h3>
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Condition</th>
+                            <th>Typical Field Pattern</th>
+                            <th>Key History Findings</th>
+                        </tr>
+                        <tr>
+                            <td>Age-related macular degeneration</td>
+                            <td>Central scotoma</td>
+                            <td>Metamorphopsia, difficulty reading/faces</td>
+                        </tr>
+                        <tr>
+                            <td>Diabetic retinopathy</td>
+                            <td>Variable (central, scattered)</td>
+                            <td>DM duration, A1c control, floaters</td>
+                        </tr>
+                        <tr>
+                            <td>Glaucoma</td>
+                            <td>Peripheral loss → tunnel vision</td>
+                            <td>Bumping into things, mobility difficulty</td>
+                        </tr>
+                        <tr>
+                            <td>Retinitis pigmentosa</td>
+                            <td>Ring scotoma → tunnel vision</td>
+                            <td>Night blindness first, family history</td>
+                        </tr>
+                        <tr>
+                            <td>Optic neuropathy</td>
+                            <td>Central or diffuse loss</td>
+                            <td>Color vision loss, APD, pain with movement (ON)</td>
+                        </tr>
+                        <tr>
+                            <td>Stroke/cortical VI</td>
+                            <td>Hemianopia</td>
+                            <td>Sudden onset, reading difficulty, navigation</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="red-flag">
+                    <div class="red-flag-title">
+                        <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                        Red Flag
+                    </div>
+                    <p>Depression affects up to 30% of people with vision loss and significantly impacts rehabilitation success. Screen all low vision patients and refer for mental health support when indicated. Vision loss adjustment counseling should be part of comprehensive care.</p>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Knowledge Check: Low Vision History</h3>
+                <div id="quiz-9">
+                    <div class="question" data-correct="B">
+                        <p class="question-text">1. What is the definition of legal blindness in the United States?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. BCVA ≤20/100 or VF ≤30°</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. BCVA ≤20/200 or VF ≤20°</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. BCVA ≤20/400 or VF ≤10°</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. No light perception</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="C">
+                        <p class="question-text">2. A patient with advanced glaucoma would MOST likely report difficulty with which task?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Reading small print</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Recognizing faces</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Navigating and mobility</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Color discrimination</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="A">
+                        <p class="question-text">3. Which visual symptom is MOST characteristic of macular degeneration?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Central scotoma with metamorphopsia</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Peripheral field constriction</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Night blindness as first symptom</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Diplopia</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                </div>
+                <div class="quiz-actions">
+                    <button class="btn btn-primary submit-quiz" data-quiz="9">Submit Answers</button>
+                    <button class="btn btn-secondary retry-quiz hidden" data-quiz="9">Try Again</button>
+                </div>
+                <div class="quiz-results">
+                    <div class="results-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                    <h4 class="results-title">Quiz Complete!</h4>
+                    <p class="results-score"></p>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary prev-topic" data-prev="8"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Previous</button>
+                <button class="btn btn-primary next-topic" data-next="10">Next: LV Assessment <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></button>
+            </div>
+        </div>
+
+        <div class="topic-content" id="topic-10">
+            <div class="lesson-card">
+                <h2>Specific Testing to Assess Visual Status</h2>
+                
+                <h3>Low Vision Acuity Testing</h3>
+                <p>Standard Snellen charts are often inadequate for low vision patients because they don\'t measure below 20/200 and have unequal letter counts per line. Specialized charts and techniques provide more accurate and clinically useful measurements.</p>
+
+                <h4>Chart Options</h4>
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Chart Type</th>
+                            <th>Features</th>
+                            <th>Best Use</th>
+                        </tr>
+                        <tr>
+                            <td>ETDRS</td>
+                            <td>Logarithmic progression, equal letters/line, standardized</td>
+                            <td>Gold standard for clinical trials and LV</td>
+                        </tr>
+                        <tr>
+                            <td>Feinbloom</td>
+                            <td>Large numbers 20/200-20/1400 range</td>
+                            <td>Severe vision loss quantification</td>
+                        </tr>
+                        <tr>
+                            <td>LEA Symbols</td>
+                            <td>House, circle, square, apple symbols</td>
+                            <td>Children, non-literate patients</td>
+                        </tr>
+                        <tr>
+                            <td>Bailey-Lovie</td>
+                            <td>LogMAR design, equal difficulty letters</td>
+                            <td>Research, precise measurements</td>
+                        </tr>
+                        <tr>
+                            <td>Counting Fingers/HM/LP</td>
+                            <td>Gross visual function</td>
+                            <td>When charts fail</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="clinical-pearl">
+                    <div class="clinical-pearl-title">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        Clinical Pearl
+                    </div>
+                    <p>Record low vision acuity in M notation or logMAR for consistency and clinical utility. M notation relates directly to print size: 1M = newspaper print at 40cm. If patient reads 2M at 20cm, they need 4M print at 40cm (standard reading distance).</p>
+                </div>
+
+                <h3>Contrast Sensitivity Testing</h3>
+                <p>Many low vision patients have reduced contrast sensitivity disproportionate to their acuity loss. This significantly impacts real-world function more than acuity alone.</p>
+
+                <h4>Testing Methods</h4>
+                <ul>
+                    <li><strong>Pelli-Robson chart:</strong> Letters of decreasing contrast (same size); most common clinical test</li>
+                    <li><strong>Mars Letter Contrast Test:</strong> Similar to Pelli-Robson; portable, hand-held</li>
+                    <li><strong>CSV-1000:</strong> Sine-wave gratings at different spatial frequencies</li>
+                    <li><strong>Functional contrast:</strong> Observe patient with low-contrast real-world tasks</li>
+                </ul>
+
+                <h4>Clinical Significance of Contrast Sensitivity</h4>
+                <ul>
+                    <li>Predicts functional vision better than acuity alone</li>
+                    <li>Impacts reading speed, mobility, face recognition</li>
+                    <li>May be severely reduced even with moderate acuity loss</li>
+                    <li>Guides lighting and contrast enhancement recommendations</li>
+                    <li>Normal CS: log 1.65-2.0; functional impairment: <log 1.5</li>
+                </ul>
+
+                <h3>Visual Field Assessment</h3>
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Test</th>
+                            <th>Field Covered</th>
+                            <th>Best Use</th>
+                        </tr>
+                        <tr>
+                            <td>Amsler grid</td>
+                            <td>Central 10°</td>
+                            <td>Macular disease monitoring</td>
+                        </tr>
+                        <tr>
+                            <td>Confrontation fields</td>
+                            <td>Gross peripheral</td>
+                            <td>Quick screening</td>
+                        </tr>
+                        <tr>
+                            <td>Tangent screen</td>
+                            <td>Central 30°</td>
+                            <td>Plotting central scotomas</td>
+                        </tr>
+                        <tr>
+                            <td>Humphrey 10-2</td>
+                            <td>Central 10°</td>
+                            <td>Macular disease detail</td>
+                        </tr>
+                        <tr>
+                            <td>Humphrey 24-2/30-2</td>
+                            <td>Central 24° or 30°</td>
+                            <td>Glaucoma, general screening</td>
+                        </tr>
+                        <tr>
+                            <td>Goldmann perimetry</td>
+                            <td>Full field (kinetic)</td>
+                            <td>Best for LV—maps entire field</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-title">📝 Exam Tip</div>
+                    <p>For patients with central scotomas (AMD), eccentric viewing training helps them use peripheral retina. Assess for a preferred retinal locus (PRL)—an area of functioning retina the patient naturally uses. This can be trained and optimized.</p>
+                </div>
+
+                <h3>Calculating Magnification Needs</h3>
+                <p>The goal magnification is based on the ratio of current acuity to target acuity for the desired task.</p>
+
+                <h4>Magnification Formula</h4>
+                <p><strong>Required Magnification = Current Acuity Denominator / Goal Acuity Denominator</strong></p>
+                <ul>
+                    <li><strong>Example:</strong> Patient has 20/200 vision, goal is 20/40 for reading newspaper</li>
+                    <li><strong>Calculation:</strong> 200 ÷ 40 = 5x magnification needed</li>
+                    <li>This helps determine device power needed</li>
+                </ul>
+
+                <h4>Types of Magnification</h4>
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Method</th>
+                            <th>How It Works</th>
+                            <th>Example</th>
+                        </tr>
+                        <tr>
+                            <td>Relative distance</td>
+                            <td>Move object closer</td>
+                            <td>40cm to 20cm = 2x magnification</td>
+                        </tr>
+                        <tr>
+                            <td>Relative size</td>
+                            <td>Use larger print/object</td>
+                            <td>18pt to 36pt font = 2x</td>
+                        </tr>
+                        <tr>
+                            <td>Angular magnification</td>
+                            <td>Optical device (telescope, magnifier)</td>
+                            <td>4x magnifier provides 4x</td>
+                        </tr>
+                        <tr>
+                            <td>Electronic magnification</td>
+                            <td>CCTV, tablet zoom</td>
+                            <td>Variable, up to 70x+</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="red-flag">
+                    <div class="red-flag-title">
+                        <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                        Red Flag
+                    </div>
+                    <p>Contrast sensitivity loss often explains why a patient with "adequate" acuity (e.g., 20/60) cannot function well. Always test contrast sensitivity in low vision patients—it may be the limiting factor, not acuity.</p>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Knowledge Check: Low Vision Assessment</h3>
+                <div id="quiz-10">
+                    <div class="question" data-correct="A">
+                        <p class="question-text">1. Which chart is considered the GOLD STANDARD for low vision acuity measurement?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. ETDRS</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Snellen</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Tumbling E</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Jaeger</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="C">
+                        <p class="question-text">2. A patient with 20/400 vision wants to read standard newsprint (20/50 equivalent). What magnification is required?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. 4x</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. 6x</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. 8x</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. 10x</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="B">
+                        <p class="question-text">3. Which measure predicts real-world functional vision BETTER than visual acuity alone?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Intraocular pressure</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Contrast sensitivity</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Pupil diameter</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Corneal thickness</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                </div>
+                <div class="quiz-actions">
+                    <button class="btn btn-primary submit-quiz" data-quiz="10">Submit Answers</button>
+                    <button class="btn btn-secondary retry-quiz hidden" data-quiz="10">Try Again</button>
+                </div>
+                <div class="quiz-results">
+                    <div class="results-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                    <h4 class="results-title">Quiz Complete!</h4>
+                    <p class="results-score"></p>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary prev-topic" data-prev="9"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Previous</button>
+                <button class="btn btn-primary next-topic" data-next="11">Next: LV Treatment <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></button>
+            </div>
+        </div>
+
+        <div class="topic-content" id="topic-11">
+            <div class="lesson-card">
+                <h2>Non-Surgical Treatment Options for Low Vision</h2>
+                
+                <h3>High Addition Spectacle Lenses</h3>
+                <p>Strong reading additions provide relative distance magnification by allowing closer working distances while maintaining clear focus. The formula: Working Distance (m) = 1/Add Power (D).</p>
+
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Add Power</th>
+                            <th>Working Distance</th>
+                            <th>Equivalent Magnification</th>
+                        </tr>
+                        <tr>
+                            <td>+2.50D (standard)</td>
+                            <td>40cm (16")</td>
+                            <td>1x (reference)</td>
+                        </tr>
+                        <tr>
+                            <td>+4.00D</td>
+                            <td>25cm (10")</td>
+                            <td>1.6x</td>
+                        </tr>
+                        <tr>
+                            <td>+6.00D</td>
+                            <td>17cm (7")</td>
+                            <td>2.4x</td>
+                        </tr>
+                        <tr>
+                            <td>+8.00D</td>
+                            <td>12.5cm (5")</td>
+                            <td>3.2x</td>
+                        </tr>
+                        <tr>
+                            <td>+10.00D</td>
+                            <td>10cm (4")</td>
+                            <td>4x</td>
+                        </tr>
+                        <tr>
+                            <td>+12.00D</td>
+                            <td>8.3cm (3.3")</td>
+                            <td>4.8x</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="clinical-pearl">
+                    <div class="clinical-pearl-title">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        Clinical Pearl
+                    </div>
+                    <p>For high adds (>+4.00D), use single vision microscopic readers rather than bifocals or progressives. The very short working distance makes bifocal head postures impractical, and progressives have too narrow a reading zone for these powers.</p>
+                </div>
+
+                <h3>Optical Magnifying Devices</h3>
+
+                <h4>Hand Magnifiers</h4>
+                <ul>
+                    <li><strong>Advantages:</strong> Portable, intuitive, familiar to patients</li>
+                    <li><strong>Powers available:</strong> Typically 2x to 20x</li>
+                    <li><strong>Illuminated versions:</strong> Improve contrast and visibility</li>
+                    <li><strong>Best for:</strong> Spot reading tasks (price tags, labels, menus)</li>
+                    <li><strong>Limitations:</strong> Hand fatigue with sustained use, need steady hands</li>
+                </ul>
+
+                <h4>Stand Magnifiers</h4>
+                <ul>
+                    <li><strong>Advantages:</strong> Fixed focus distance—no accommodation needed; stable for tremor</li>
+                    <li><strong>Design:</strong> Preset distance from lens to page</li>
+                    <li><strong>Use with spectacles:</strong> Often designed to be used WITH reading glasses</li>
+                    <li><strong>Powers available:</strong> 2x to 20x</li>
+                    <li><strong>Best for:</strong> Patients with hand tremor, arthritis, sustained reading</li>
+                </ul>
+
+                <h4>Spectacle-Mounted Magnifiers</h4>
+                <ul>
+                    <li><strong>Microscopic spectacles:</strong> High plus adds (discussed above)</li>
+                    <li><strong>Telemicroscopes:</strong> Telescope with reading cap for intermediate distances</li>
+                    <li><strong>Prism half-eyes:</strong> BI prism allows binocular use at close range</li>
+                    <li><strong>Advantages:</strong> Hands-free operation</li>
+                    <li><strong>Limitations:</strong> Cosmesis, narrow field of view, fixed working distance</li>
+                </ul>
+
+                <h4>Telescopes</h4>
+                <ul>
+                    <li><strong>Galilean:</strong> Shorter, lighter, upright image, narrower field</li>
+                    <li><strong>Keplerian:</strong> Longer, wider field, inverted image (needs prism)</li>
+                    <li><strong>Uses:</strong> Distance tasks (TV, classroom, theater, faces, signs)</li>
+                    <li><strong>Bioptic telescopes:</strong> Mounted in spectacles for driving (state laws vary)</li>
+                </ul>
+
+                <h3>Electronic Magnification</h3>
+
+                <h4>CCTV/Video Magnifiers (Desktop)</h4>
+                <ul>
+                    <li><strong>Magnification:</strong> Variable, typically 2x to 70x+</li>
+                    <li><strong>Contrast options:</strong> Reverse polarity (white on black often preferred)</li>
+                    <li><strong>Working distance:</strong> Natural, ergonomic position</li>
+                    <li><strong>Features:</strong> Line markers, adjustable colors, freeze frame</li>
+                    <li><strong>Cost:</strong> $500-$3,500+ depending on features</li>
+                    <li><strong>Best for:</strong> Extended reading, writing, crafts</li>
+                </ul>
+
+                <h4>Portable Electronic Magnifiers</h4>
+                <ul>
+                    <li><strong>Handheld devices:</strong> Small camera-based magnifiers</li>
+                    <li><strong>Tablet/smartphone apps:</strong> Built-in cameras with zoom</li>
+                    <li><strong>Advantages:</strong> Portable, often already owned, many free apps</li>
+                </ul>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-title">📝 Exam Tip</div>
+                    <p>Key advantage of CCTV over optical magnifiers: REVERSE POLARITY (contrast reversal). Many AMD and RP patients see dramatically better with white text on black background. Optical magnifiers cannot provide this.</p>
+                </div>
+
+                <h3>Lighting and Contrast Enhancement</h3>
+                <ul>
+                    <li><strong>Task lighting:</strong> 2-3x ambient illumination for reading tasks</li>
+                    <li><strong>Light positioning:</strong> Behind and to the side to avoid glare and shadows</li>
+                    <li><strong>Recommended levels:</strong> 75-150 foot-candles for reading (vs. 30-50 normal)</li>
+                    <li><strong>Gooseneck lamps:</strong> Allow precise positioning</li>
+                    <li><strong>LED vs. incandescent:</strong> LED cooler, more efficient; consider color temperature</li>
+                </ul>
+
+                <h4>Contrast Enhancement Strategies</h4>
+                <ul>
+                    <li>High-contrast materials (black pen on white paper, bold-lined paper)</li>
+                    <li>Yellow acetate overlays (may improve contrast for some)</li>
+                    <li>Absorptive lenses/filters (yellow, amber, plum) for specific conditions</li>
+                    <li>Reduce glare with matte surfaces, anti-reflective coatings</li>
+                    <li>Good contrast in environment (contrasting edges on stairs, etc.)</li>
+                </ul>
+
+                <div class="red-flag">
+                    <div class="red-flag-title">
+                        <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                        Red Flag
+                    </div>
+                    <p>For macular degeneration patients, standard lighting recommendations may not apply. Many need MUCH brighter task lighting (75-150 fc) but are also photophobic outdoors. Use directed task lighting rather than overhead ambient light, and recommend quality sunglasses with side shields outdoors.</p>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Knowledge Check: Low Vision Treatment</h3>
+                <div id="quiz-11">
+                    <div class="question" data-correct="B">
+                        <p class="question-text">1. A +10.00D microscopic add provides what equivalent magnification compared to standard reading distance?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. 2x</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. 4x</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. 6x</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. 10x</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="D">
+                        <p class="question-text">2. Which magnification device is MOST appropriate for a patient with significant hand tremor who wants to read for extended periods?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Hand-held magnifier</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Microscopic spectacles</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Pocket magnifier</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Stand magnifier or CCTV</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="C">
+                        <p class="question-text">3. What is a KEY advantage of electronic video magnifiers (CCTVs) over optical magnifiers?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Lower cost</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Greater portability</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Reverse polarity/contrast reversal option</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. No learning curve required</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                </div>
+                <div class="quiz-actions">
+                    <button class="btn btn-primary submit-quiz" data-quiz="11">Submit Answers</button>
+                    <button class="btn btn-secondary retry-quiz hidden" data-quiz="11">Try Again</button>
+                </div>
+                <div class="quiz-results">
+                    <div class="results-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                    <h4 class="results-title">Quiz Complete!</h4>
+                    <p class="results-score"></p>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary prev-topic" data-prev="10"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Previous</button>
+                <button class="btn btn-primary next-topic" data-next="12">Next: LV Referrals <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></button>
+            </div>
+        </div>
+
+        <div class="topic-content" id="topic-12">
+            <div class="lesson-card">
+                <h2>Treatment & Management by Vision Impairment Specialists</h2>
+                
+                <h3>The Multidisciplinary Low Vision Team</h3>
+                <p>Comprehensive low vision rehabilitation often requires a team approach. Knowing when and where to refer is essential for optimal patient outcomes.</p>
+
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Team Member</th>
+                            <th>Role</th>
+                            <th>When to Refer</th>
+                        </tr>
+                        <tr>
+                            <td>Low Vision Optometrist/Ophthalmologist</td>
+                            <td>Clinical evaluation, optical devices, medical management</td>
+                            <td>All patients with uncorrectable vision loss</td>
+                        </tr>
+                        <tr>
+                            <td>Occupational Therapist (OT)</td>
+                            <td>ADL training, home modifications, adaptive techniques</td>
+                            <td>Difficulty with daily tasks, kitchen safety</td>
+                        </tr>
+                        <tr>
+                            <td>Orientation & Mobility (O&M) Specialist</td>
+                            <td>Travel training, cane skills, navigation</td>
+                            <td>Mobility concerns, falls, VF <20°</td>
+                        </tr>
+                        <tr>
+                            <td>Vision Rehabilitation Therapist</td>
+                            <td>Daily living skills, labeling, organization</td>
+                            <td>Need help adapting home/work environment</td>
+                        </tr>
+                        <tr>
+                            <td>Assistive Technology Specialist</td>
+                            <td>Computer access, screen readers, electronic devices</td>
+                            <td>Need for computer/smartphone accessibility</td>
+                        </tr>
+                        <tr>
+                            <td>Social Worker/Counselor</td>
+                            <td>Adjustment counseling, resources, benefits</td>
+                            <td>Depression, anxiety, difficulty coping</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="clinical-pearl">
+                    <div class="clinical-pearl-title">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        Clinical Pearl
+                    </div>
+                    <p>State Vocational Rehabilitation (VR) agencies provide FREE services for working-age adults with vision loss, including job training, assistive technology, workplace accommodations, and job placement services. This is an underutilized resource—refer all working-age patients.</p>
+                </div>
+
+                <h3>Eccentric Viewing Training</h3>
+                <p>For patients with central scotomas (primarily AMD), training to use a preferred retinal locus (PRL) can significantly improve reading and visual function.</p>
+
+                <h4>Principles of Eccentric Viewing</h4>
+                <ul>
+                    <li><strong>Identify PRL:</strong> Find the best area of remaining functional retina</li>
+                    <li><strong>Location:</strong> Usually 2-15° from former fovea</li>
+                    <li><strong>Direction:</strong> Most common is above or to the left of scotoma</li>
+                    <li><strong>Training goal:</strong> Consistent, automatic use of PRL for viewing</li>
+                    <li><strong>Improvement:</strong> Reading speed and accuracy increase with practice</li>
+                </ul>
+
+                <h4>Training Methods</h4>
+                <ul>
+                    <li><strong>Clock face technique:</strong> Patient looks at specific "hour" position relative to target</li>
+                    <li><strong>Steady eye strategy:</strong> Keep eyes still, move reading material</li>
+                    <li><strong>Target tracking exercises:</strong> Following moving targets with PRL</li>
+                    <li><strong>Reading practice:</strong> Structured reading exercises with specific gaze direction</li>
+                    <li><strong>Microperimetry biofeedback:</strong> Advanced real-time feedback (specialized centers)</li>
+                </ul>
+
+                <h3>Orientation and Mobility (O&M) Services</h3>
+
+                <h4>When to Refer for O&M</h4>
+                <ul>
+                    <li>Visual field less than 20° diameter (tunnel vision)</li>
+                    <li>Difficulty navigating, especially in unfamiliar environments</li>
+                    <li>History of falls or near-misses</li>
+                    <li>Loss of confidence in traveling independently</li>
+                    <li>New or recent significant vision loss affecting mobility</li>
+                    <li>Patient avoids going out due to vision concerns</li>
+                </ul>
+
+                <h4>O&M Services Include</h4>
+                <ul>
+                    <li><strong>White cane training:</strong> Proper techniques for detecting obstacles, drop-offs, stairs</li>
+                    <li><strong>Sighted guide technique:</strong> Safe travel with human assistance</li>
+                    <li><strong>Environmental awareness:</strong> Using landmarks, sun position, sounds</li>
+                    <li><strong>Public transportation:</strong> Bus, train, ride-share services</li>
+                    <li><strong>Indoor orientation:</strong> Home, workplace, public buildings</li>
+                    <li><strong>Street crossing:</strong> Traffic patterns, crosswalk timing</li>
+                </ul>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-title">📝 Exam Tip</div>
+                    <p>Know the referral triggers: O&M for mobility/safety concerns (VF <20°, falls), OT for daily living skills (cooking, grooming), vocational rehab for employment needs, and mental health for adjustment to vision loss.</p>
+                </div>
+
+                <h3>Resources and Services</h3>
+
+                <h4>National Organizations</h4>
+                <ul>
+                    <li><strong>American Foundation for the Blind (AFB):</strong> Information, resources, advocacy</li>
+                    <li><strong>National Federation of the Blind (NFB):</strong> Advocacy, peer support, resources</li>
+                    <li><strong>Lighthouse Guild:</strong> Direct services, research, education</li>
+                    <li><strong>VisionAware (AFB):</strong> Online resources for adults losing vision</li>
+                    <li><strong>Hadley Institute:</strong> Free distance education courses</li>
+                </ul>
+
+                <h4>State and Local Resources</h4>
+                <ul>
+                    <li><strong>State Services for the Blind:</strong> Every state has an agency providing free services</li>
+                    <li><strong>Library of Congress NLS:</strong> Free Talking Books and Braille</li>
+                    <li><strong>State Vocational Rehabilitation:</strong> Employment services for working-age</li>
+                    <li><strong>Local support groups:</strong> Peer support, shared experiences</li>
+                    <li><strong>Transportation services:</strong> Paratransit, ride programs for VI</li>
+                </ul>
+
+                <h4>Technology Resources</h4>
+                <ul>
+                    <li><strong>Built-in accessibility:</strong> iOS VoiceOver, Android TalkBack, Windows Narrator</li>
+                    <li><strong>Screen magnification:</strong> ZoomText, MAGic, built-in magnifiers</li>
+                    <li><strong>Screen readers:</strong> JAWS, NVDA (free), VoiceOver</li>
+                    <li><strong>Smart speakers:</strong> Alexa, Google Home for hands-free information</li>
+                </ul>
+
+                <div class="red-flag">
+                    <div class="red-flag-title">
+                        <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                        Red Flag
+                    </div>
+                    <p>Depression affects up to 30% of people with vision loss and is a significant barrier to rehabilitation success. Screen all low vision patients for depression, and refer to mental health services when indicated. Adjustment to vision loss counseling should be part of comprehensive care.</p>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Knowledge Check: Low Vision Referrals</h3>
+                <div id="quiz-12">
+                    <div class="question" data-correct="B">
+                        <p class="question-text">1. A patient with AMD has a central scotoma and wants to learn to use their remaining peripheral vision for reading. Which technique should be taught?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Tracking exercises</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Eccentric viewing training</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Convergence exercises</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Accommodation training</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="A">
+                        <p class="question-text">2. A patient with retinitis pigmentosa has 15° remaining visual field and reports bumping into objects and near-falls. Which specialist should be consulted?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Orientation and Mobility (O&M) specialist</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Assistive technology specialist</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Social worker</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Physical therapist</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="D">
+                        <p class="question-text">3. A 45-year-old patient with recent severe vision loss is concerned about maintaining employment. Which resource is MOST appropriate?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Library Talking Book program</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Low vision support group</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. National Federation of the Blind</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. State Vocational Rehabilitation agency</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                </div>
+                <div class="quiz-actions">
+                    <button class="btn btn-primary submit-quiz" data-quiz="12">Submit Answers</button>
+                    <button class="btn btn-secondary retry-quiz hidden" data-quiz="12">Try Again</button>
+                </div>
+                <div class="quiz-results">
+                    <div class="results-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                    <h4 class="results-title">Quiz Complete!</h4>
+                    <p class="results-score"></p>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary prev-topic" data-prev="11"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Previous</button>
+                <button class="btn btn-primary next-topic" data-next="final">Take Final Quiz <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></button>
+            </div>
+        </div>
+
+        <!-- ========== FINAL QUIZ ========== -->
+        <div class="topic-content" id="topic-final">
+            <div class="lesson-card">
+                <div class="final-quiz-intro" id="finalQuizIntro">
+                    <h2>Module 3 Final Assessment</h2>
+                    <p>Test your comprehensive knowledge of Ametropia & Ophthalmic Optics. This quiz covers all 12 topics. You need 80% (14/17 correct) to pass.</p>
+                    <button class="btn btn-primary start-final-quiz">Begin Final Quiz</button>
+                </div>
+
+                <div id="quiz-final" class="hidden">
+                    <div class="question" data-correct="B">
+                        <p class="question-text">1. What is the standard of care lens material for a 10-year-old child?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. CR-39 plastic</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Polycarbonate</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. High-index 1.67</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Crown glass</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="C">
+                        <p class="question-text">2. A patient with esotropia requires prism. Which direction should the prism base be oriented?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Base IN</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Base UP</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Base OUT</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Base DOWN</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="A">
+                        <p class="question-text">3. Using Prentice\'s Rule, a -5.00D lens decentered 6mm induces how much prism?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. 3.0Δ</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. 0.3Δ</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. 30Δ</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. 1.2Δ</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="B">
+                        <p class="question-text">4. What is the MOST common cause of progressive lens non-adaptation?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Add power too strong</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Fitting height too low</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Frame too large</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Corridor too wide</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="D">
+                        <p class="question-text">5. Which lens material has the LOWEST Abbe value (most chromatic aberration)?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. CR-39 (Abbe 58)</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Trivex (Abbe 45)</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Crown glass (Abbe 59)</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Polycarbonate (Abbe 30)</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="C">
+                        <p class="question-text">6. A child with two myopic parents has approximately what increased risk of developing myopia?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. 2x</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. 4x</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. 6x</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. 10x</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="B">
+                        <p class="question-text">7. MiSight 1 Day contact lenses demonstrated what percentage reduction in myopia progression?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. 25%</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. 59%</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. 75%</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. 90%</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="A">
+                        <p class="question-text">8. Orthokeratology achieves its refractive effect primarily through:</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Epithelial redistribution</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Stromal thinning</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Central corneal steepening</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Collagen cross-linking</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="C">
+                        <p class="question-text">9. Which atropine concentration provides good efficacy with minimal rebound effect?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. 1.0%</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. 0.5%</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. 0.01% to 0.05%</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. 0.25%</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="B">
+                        <p class="question-text">10. What is the definition of legal blindness in the United States?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. BCVA 20/100 or worse</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. BCVA 20/200 or worse (or VF ≤20°)</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. BCVA 20/400 or worse</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. No light perception only</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="A">
+                        <p class="question-text">11. Which acuity chart is considered the GOLD STANDARD for low vision assessment?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. ETDRS</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Snellen</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Jaeger</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Tumbling E</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="D">
+                        <p class="question-text">12. A patient with 20/400 vision wants to read 20/50 print. What magnification is needed?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. 2x</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. 4x</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. 6x</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. 8x</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="B">
+                        <p class="question-text">13. A patient with AMD wants to learn to use peripheral vision for reading. Which technique is appropriate?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Convergence exercises</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Eccentric viewing training</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Vision therapy</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Accommodation exercises</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="C">
+                        <p class="question-text">14. A +8.00D microscopic add provides what working distance?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. 25cm</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. 17cm</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. 12.5cm</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. 8.3cm</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="A">
+                        <p class="question-text">15. A patient with RP has 15° visual field and reports falls. Which specialist should be consulted?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Orientation & Mobility specialist</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Occupational therapist only</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Endocrinologist</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Retinal surgeon</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="D">
+                        <p class="question-text">16. Which device is MOST appropriate for a low vision patient with significant hand tremor?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Hand-held magnifier</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Pocket magnifier</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Bar magnifier</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Stand magnifier or CCTV</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    <div class="question" data-correct="B">
+                        <p class="question-text">17. Which environmental factor has the STRONGEST evidence for protecting against myopia development?</p>
+                        <div class="options">
+                            <div class="option" data-option="A"><div class="option-radio"></div><span class="option-text">A. Reducing screen time</span></div>
+                            <div class="option" data-option="B"><div class="option-radio"></div><span class="option-text">B. Increasing outdoor time</span></div>
+                            <div class="option" data-option="C"><div class="option-radio"></div><span class="option-text">C. Improving reading posture</span></div>
+                            <div class="option" data-option="D"><div class="option-radio"></div><span class="option-text">D. Taking vitamin supplements</span></div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                </div>
+
+                <div class="quiz-actions hidden" id="finalQuizActions">
+                    <button class="btn btn-primary submit-quiz" data-quiz="final">Submit Final Quiz</button>
+                    <button class="btn btn-secondary retry-quiz hidden" data-quiz="final">Retry Quiz</button>
+                </div>
+
+                <div class="quiz-results" id="finalResults">
+                    <div class="results-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                    <h4 class="results-title">Final Quiz Complete!</h4>
+                    <p class="results-score" id="finalScoreText"></p>
+                </div>
+
+                <div class="nav-buttons" id="finalNavButtons">
+                    <button class="btn btn-secondary prev-topic" data-prev="12"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Back to Topics</button>
+                </div>
+            </div>
+
+            <div class="completion-section" id="completionSection">
+                <div class="completion-icon">
+                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                </div>
+                <h3 class="completion-title">Congratulations!</h3>
+                <p class="completion-subtitle">Module 3 Complete</p>
+                <p class="completion-message">You have successfully completed the Ametropia & Ophthalmic Optics module. You\'re ready to move on to the next module!</p>
+                <div class="completion-actions">
+                    <a href="abo-optometry-modules.html" class="btn btn-secondary">Back to All Modules</a>
+                    <a href="abo-optometry-module-4.html" class="btn btn-primary">Next Module</a>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+        `;
+        
+        this.initializeModule();
+    }
+
+    initializeModule() {
+        const shadow = this.shadowRoot;
+        const topicTabs = shadow.querySelectorAll('.topic-tab');
+        const topicContents = shadow.querySelectorAll('.topic-content');
+        const progressFill = shadow.getElementById('progressFill');
+        const progressText = shadow.getElementById('progressText');
+        let completedTopics = new Set();
+        const totalTopics = 12;
+
+        function updateProgress() {
+            const percentage = Math.round((completedTopics.size / totalTopics) * 100);
+            progressFill.style.width = percentage + '%';
+            progressText.textContent = percentage + '% Complete';
+            try { localStorage.setItem('aboModule3Progress', JSON.stringify(Array.from(completedTopics))); } catch(e) {}
+        }
+
+        // Topic tab navigation
+        topicTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const topicId = this.dataset.topic;
+                topicTabs.forEach(t => t.classList.remove('active'));
+                topicContents.forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                shadow.getElementById('topic-' + topicId).classList.add('active');
+                this.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            });
+        });
+
+        // Next/Previous topic buttons
+        shadow.querySelectorAll('.next-topic').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const nextId = this.dataset.next;
+                shadow.querySelector('[data-topic="' + nextId + '"]').click();
+                shadow.querySelector('.wrapper').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        shadow.querySelectorAll('.prev-topic').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const prevId = this.dataset.prev;
+                shadow.querySelector('[data-topic="' + prevId + '"]').click();
+                shadow.querySelector('.wrapper').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Quiz option selection
+        shadow.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                if (this.closest('.question').classList.contains('answered')) return;
+                this.closest('.options').querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Submit quiz (topic quizzes)
+        shadow.querySelectorAll('.submit-quiz:not([data-quiz="final"])').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const quizId = this.dataset.quiz;
+                const quizContainer = shadow.getElementById('quiz-' + quizId);
+                const questions = quizContainer.querySelectorAll('.question');
+                let correct = 0, total = questions.length, allAnswered = true;
+
+                questions.forEach(q => {
+                    const selected = q.querySelector('.option.selected');
+                    if (!selected) { allAnswered = false; return; }
+                    
+                    q.classList.add('answered');
+                    const correctAnswer = q.dataset.correct;
+                    const selectedAnswer = selected.dataset.option;
+
+                    if (selectedAnswer === correctAnswer) {
+                        selected.classList.add('correct');
+                        correct++;
+                    } else {
+                        selected.classList.add('incorrect');
+                        q.querySelector('[data-option="' + correctAnswer + '"]').classList.add('correct');
+                    }
+
+                    const feedback = q.querySelector('.feedback');
+                    feedback.className = selectedAnswer === correctAnswer ? 'feedback show correct' : 'feedback show incorrect';
+                    feedback.innerHTML = selectedAnswer === correctAnswer ? '<strong>Correct!</strong> Well done.' : '<strong>Incorrect.</strong> Review the material above.';
+                });
+
+                if (!allAnswered) { alert('Please answer all questions before submitting.'); return; }
+
+                const resultsDiv = quizContainer.closest('.quiz-section').querySelector('.quiz-results');
+                resultsDiv.classList.add('show');
+                resultsDiv.querySelector('.results-score').textContent = 'You scored ' + correct + ' out of ' + total;
+                
+                this.classList.add('hidden');
+                this.closest('.quiz-actions').querySelector('.retry-quiz').classList.remove('hidden');
+                
+                completedTopics.add(parseInt(quizId));
+                updateProgress();
+                shadow.querySelector('[data-topic="' + quizId + '"]').classList.add('completed');
+            });
+        });
+
+        // Retry quiz (topic quizzes)
+        shadow.querySelectorAll('.retry-quiz:not([data-quiz="final"])').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const quizId = this.dataset.quiz;
+                const quizContainer = shadow.getElementById('quiz-' + quizId);
+                
+                quizContainer.querySelectorAll('.question').forEach(q => {
+                    q.classList.remove('answered');
+                    q.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected', 'correct', 'incorrect'));
+                    q.querySelector('.feedback').className = 'feedback';
+                });
+
+                quizContainer.closest('.quiz-section').querySelector('.quiz-results').classList.remove('show');
+                this.classList.add('hidden');
+                this.closest('.quiz-actions').querySelector('.submit-quiz').classList.remove('hidden');
+            });
+        });
+
+        // Start final quiz
+        const startFinalQuizBtn = shadow.querySelector('.start-final-quiz');
+        if (startFinalQuizBtn) {
+            startFinalQuizBtn.addEventListener('click', function() {
+                shadow.getElementById('finalQuizIntro').classList.add('hidden');
+                shadow.getElementById('quiz-final').classList.remove('hidden');
+                shadow.getElementById('finalQuizActions').classList.remove('hidden');
+            });
+        }
+
+        // Final quiz submit
+        const finalSubmitBtn = shadow.querySelector('.submit-quiz[data-quiz="final"]');
+        if (finalSubmitBtn) {
+            finalSubmitBtn.addEventListener('click', function() {
+                const quizContainer = shadow.getElementById('quiz-final');
+                const questions = quizContainer.querySelectorAll('.question');
+                let correct = 0, total = questions.length, allAnswered = true;
+                
+                questions.forEach(q => {
+                    const selected = q.querySelector('.option.selected');
+                    if (!selected) { allAnswered = false; return; }
+                    q.classList.add('answered');
+                    const correctAnswer = q.dataset.correct;
+                    const selectedAnswer = selected.dataset.option;
+                    if (selectedAnswer === correctAnswer) { selected.classList.add('correct'); correct++; }
+                    else { selected.classList.add('incorrect'); q.querySelector('[data-option="' + correctAnswer + '"]').classList.add('correct'); }
+                    const feedback = q.querySelector('.feedback');
+                    feedback.className = selectedAnswer === correctAnswer ? 'feedback show correct' : 'feedback show incorrect';
+                    feedback.innerHTML = selectedAnswer === correctAnswer ? '<strong>Correct!</strong>' : '<strong>Incorrect.</strong>';
+                });
+                
+                if (!allAnswered) { alert('Please answer all questions before submitting.'); return; }
+                
+                const percentage = Math.round((correct / total) * 100);
+                const passed = percentage >= 80;
+                
+                shadow.getElementById('finalResults').classList.add('show');
+                shadow.getElementById('finalScoreText').textContent = 'You scored ' + correct + ' out of ' + total + ' (' + percentage + '%)' + (passed ? ' - PASSED!' : ' - Please review and try again.');
+                
+                this.classList.add('hidden');
+                shadow.querySelector('.retry-quiz[data-quiz="final"]').classList.remove('hidden');
+                
+                if (passed) {
+                    shadow.getElementById('finalNavButtons').classList.add('hidden');
+                    shadow.getElementById('completionSection').style.display = 'block';
+                    shadow.querySelector('[data-topic="final"]').classList.add('completed');
+                    try { localStorage.setItem('aboModule3Complete', 'true'); } catch(e) {}
+                }
+            });
+        }
+        
+        // Final quiz retry
+        const finalRetryBtn = shadow.querySelector('.retry-quiz[data-quiz="final"]');
+        if (finalRetryBtn) {
+            finalRetryBtn.addEventListener('click', function() {
+                const quizContainer = shadow.getElementById('quiz-final');
+                quizContainer.querySelectorAll('.question').forEach(q => {
+                    q.classList.remove('answered');
+                    q.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected', 'correct', 'incorrect'));
+                    q.querySelector('.feedback').className = 'feedback';
+                });
+                shadow.getElementById('finalResults').classList.remove('show');
+                shadow.getElementById('completionSection').style.display = 'none';
+                shadow.getElementById('finalNavButtons').classList.remove('hidden');
+                this.classList.add('hidden');
+                shadow.querySelector('.submit-quiz[data-quiz="final"]').classList.remove('hidden');
+            });
+        }
+
+        // Load saved progress
+        try {
+            const savedProgress = localStorage.getItem('aboModule3Progress');
+            if (savedProgress) {
+                completedTopics = new Set(JSON.parse(savedProgress));
+                completedTopics.forEach(topicId => {
+                    const tab = shadow.querySelector('[data-topic="' + topicId + '"]');
+                    if (tab) tab.classList.add('completed');
+                });
+                updateProgress();
+            }
+        } catch(e) {}
+    }
+    
+    disconnectedCallback() { if (this.shadowRoot) this.shadowRoot.innerHTML = ''; }
+}
+
+customElements.define('abo-optometry-module-3-ametropia', AboOptometryModule3Ametropia);
